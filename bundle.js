@@ -11786,13 +11786,13 @@ function makeKeyboardDriver() {
   var keyUp$ = _xstream2.default.create();
   var keyPress$ = _xstream2.default.create();
   document.addEventListener('keydown', function (event) {
-    return event$.shamefullySendNext(event);
+    return keyDown$.shamefullySendNext(event);
   });
   document.addEventListener('keyup', function (event) {
-    return event$.shamefullySendNext(event);
+    return keyUp$.shamefullySendNext(event);
   });
   document.addEventListener('keypress', function (event) {
-    return event$.shamefullySendNext(event);
+    return keyPress$.shamefullySendNext(event);
   });
   var keyboardDriver = {
     down$: keyDown$,
@@ -13535,10 +13535,17 @@ function main(_ref) {
   });
   var message$ = _xstream2.default.merge(keyDown$, keyPress$, keyUp$).startWith(null);
   var messagelist$ = message$.fold(function (list, message) {
-    return list.push(message);
+    if (!message) return list || [];
+    list.push(message);
+    return list;
   }, []);
-  var vtree$ = message$.map(function (messages) {
-    return (0, _dom.div)('#root', [(0, _dom.label)('Type here:'), (0, _dom.input)({ attributes: { type: 'text' } }), (0, _dom.hr)(), (0, _dom.ul)('.log', [messages])]);
+  messagelist$.map(function (x) {
+    return console.log(x.join(','));
+  });
+  var vtree$ = messagelist$.map(function (messages) {
+    return (0, _dom.div)('#root', [(0, _dom.label)('Type here:'), (0, _dom.input)({ attributes: { type: 'text' } }), (0, _dom.hr)(), (0, _dom.ul)('.log', messages.map(function (message) {
+      return (0, _dom.li)([message]);
+    }))]);
   });
   var sinks = {
     dom: vtree$

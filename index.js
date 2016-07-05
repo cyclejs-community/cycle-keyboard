@@ -9,7 +9,14 @@ function main({ dom, keyboard }) {
   const keyPress$ = keyboard.press$.map(x => `${x.charCode} keypress`);
   const keyUp$ = keyboard.up$.map(x => `${x.keyCode} keyup`);
   const message$ = xs.merge(keyDown$, keyPress$, keyUp$).startWith(null);
-  const messagelist$ = message$.fold(((list, message) => list.push(message)), []);
+  const messagelist$ = message$.fold((list, message) =>
+    {
+      if(!message)
+        return list || [];
+      list.push(message);
+      return list;
+    }, []);
+  messagelist$.map(x => console.log(x.join(',')));
   const vtree$ = messagelist$.map(messages =>
     div('#root', [
       label('Type here:'),
@@ -26,7 +33,7 @@ function main({ dom, keyboard }) {
 
 const drivers = {
   dom: makeDOMDriver('#app'),
-  keyboard: makeKeyboardDriver()
+  keyboard: makeKeyboardDriver
 }
 
 run(main, drivers);
