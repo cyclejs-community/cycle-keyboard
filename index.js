@@ -14,3 +14,5 @@ function makeKeyboardDriver() {
   };
   return keyboardDriver;
 }
+
+module.exports = { makeKeyboardDriver };
