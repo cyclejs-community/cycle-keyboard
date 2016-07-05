@@ -1,0 +1,1 @@
+console.error("\nC:\\Users\\Sudarsan Balaji\\Source\\Repos\\cycle-keyboard\\cycle-keyboard\\node_modules\\cycle-keyboard\\index.js:1\nimport xs from 'xstream';\r\n^\nParseError: 'import' and 'export' may appear only with 'sourceType: module'");
