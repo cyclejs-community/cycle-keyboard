@@ -13722,17 +13722,17 @@ function main(_ref) {
   var dom = _ref.dom;
   var keyboard = _ref.keyboard;
 
-  var shiftkeyDown$ = keyboard.down$.filter(function (e) {
+  var shiftKeyDown$ = keyboard.down$.filter(function (e) {
     return e.displayKey == 'shift';
   }).map(function (x) {
     return true;
   });
-  var shiftkeyUp$ = keyboard.up$.filter(function (e) {
+  var shiftKeyUp$ = keyboard.up$.filter(function (e) {
     return e.displayKey == 'shift';
   }).map(function (x) {
     return false;
   });
-  var shifted$ = _xstream2.default.merge(shiftkeyUp$, shiftkeyUp$).startWith(false);
+  var shifted$ = _xstream2.default.merge(shiftKeyDown$, shiftKeyUp$).startWith(false);
   var keyDown$ = keyboard.down$.map(function (e) {
     return e.displayKey + ' key is down';
   });

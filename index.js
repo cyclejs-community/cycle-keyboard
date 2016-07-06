@@ -4,9 +4,9 @@ import { run } from '@cycle/xstream-run';
 import { div, ul, li, span, makeDOMDriver } from '@cycle/dom';
 import { makeKeyboardDriver } from 'cycle-keyboard';
 function main({ dom, keyboard }) {
-  const shiftkeyDown$ = keyboard.down$.filter(e => e.displayKey == 'shift').map(x => true);
-  const shiftkeyUp$ = keyboard.up$.filter(e => e.displayKey == 'shift').map(x => false);
-  const shifted$ = xs.merge(shiftkeyUp$, shiftkeyUp$).startWith(false);
+  const shiftKeyDown$ = keyboard.down$.filter(e => e.displayKey == 'shift').map(x => true);
+  const shiftKeyUp$ = keyboard.up$.filter(e => e.displayKey == 'shift').map(x => false);
+  const shifted$ = xs.merge(shiftKeyDown$, shiftKeyUp$).startWith(false);
   const keyDown$ = keyboard.down$.map(e => `${e.displayKey} key is down`);
   const keyPress$ = keyboard.press$.map(e => `${e.displayChar} is typed`);
   const keyUp$ = keyboard.up$.map(e => `${e.displayKey} key is up`);
