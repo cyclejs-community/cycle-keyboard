@@ -13722,11 +13722,22 @@ function main(_ref) {
   var dom = _ref.dom;
   var keyboard = _ref.keyboard;
 
+  var shiftkeyDown$ = keyboard.down$.filter(function (e) {
+    return e.displayKey == 'shift';
+  }).map(function (x) {
+    return true;
+  });
+  var shiftkeyUp$ = keyboard.up$.filter(function (e) {
+    return e.displayKey == 'shift';
+  }).map(function (x) {
+    return false;
+  });
+  var shifted$ = _xstream2.default.merge(shiftkeyUp$, shiftkeyUp$).startWith(false);
   var keyDown$ = keyboard.down$.map(function (e) {
     return e.displayKey + ' key is down';
   });
   var keyPress$ = keyboard.press$.map(function (e) {
-    return e.displayKey + ' key is pressed, ' + e.displayChar + ' is typed';
+    return e.displayChar + ' is typed';
   });
   var keyUp$ = keyboard.up$.map(function (e) {
     return e.displayKey + ' key is up';
@@ -14035,12 +14046,12 @@ function main(_ref) {
     name: 'enter',
     alt: 'num.enter'
   }]);
-  var state$ = _xstream2.default.combine(messages$, keys$);
+  var state$ = _xstream2.default.combine(messages$, keys$, shifted$);
   var vtree$ = state$.map(function (state) {
     return (0, _dom.div)('#root', [(0, _dom.div)('.container', [(0, _dom.div)('.messages', [(0, _dom.ul)('.log', state[0].map(function (message) {
       return (0, _dom.li)([message]);
-    }))]), (0, _dom.div)('.keyboard', [(0, _dom.div)('.panel', state[1].map(function (k) {
-      return (0, _dom.div)('.' + (k.alt || k.name) + '.key', [(0, _dom.span)([k.name])]);
+    }))]), (0, _dom.div)('.keyboard', [(0, _dom.div)(state[2] ? '.shifted.panel' : '.panel', state[1].map(function (k) {
+      return (0, _dom.div)('.' + (k.alt || k.name) + '.key', [(0, _dom.span)([k.name]), (0, _dom.span)('.shifted', k.shift || k.name)]);
     }))])])]);
   });
   var sinks = {

@@ -4,6 +4,7 @@ html, body {
     background: #9c27b0;
     margin: 0;
     padding: 0;
+    font-family: 'Raleway', Arial, Helvetica, sans-serif;
 }
 
 html {
@@ -33,6 +34,7 @@ html {
     height: 50%;
     overflow: hidden;
     overflow-y: scroll;
+    margin: 20px;
 }
 
 .messages .log {
@@ -46,6 +48,7 @@ html {
     vertical-align: middle;
     font-size: 2em;
     color: white;
+    font-weight: 100;
 }
 
 /* refer http://www.wasdkeyboards.com/media/keycap_layout.jpg */
@@ -91,6 +94,28 @@ html {
     right: 0;
     padding: 4px;
     border: 1px solid #9c27b0;
+    font-weight: 700;
+}
+
+.key.pressed {
+    background: #9c27b0;
+}
+
+.key.pressed span {
+    color: white;
+    border: 1px solid white;
+}
+
+.key .shifted {
+    display: none;
+}
+
+.shifted.panel .key span {
+    display: none;
+}
+
+.shifted.panel .key span.shifted {
+    display: inline;
 }
 
 .f1.key {

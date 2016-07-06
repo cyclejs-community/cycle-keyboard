@@ -4,8 +4,11 @@ import { run } from '@cycle/xstream-run';
 import { div, ul, li, span, makeDOMDriver } from '@cycle/dom';
 import { makeKeyboardDriver } from 'cycle-keyboard';
 function main({ dom, keyboard }) {
+  const shiftkeyDown$ = keyboard.down$.filter(e => e.displayKey == 'shift').map(x => true);
+  const shiftkeyUp$ = keyboard.up$.filter(e => e.displayKey == 'shift').map(x => false);
+  const shifted$ = xs.merge(shiftkeyUp$, shiftkeyUp$).startWith(false);
   const keyDown$ = keyboard.down$.map(e => `${e.displayKey} key is down`);
-  const keyPress$ = keyboard.press$.map(e => `${e.displayKey} key is pressed, ${e.displayChar} is typed`);
+  const keyPress$ = keyboard.press$.map(e => `${e.displayChar} is typed`);
   const keyUp$ = keyboard.up$.map(e => `${e.displayKey} key is up`);
   const message$ = xs.merge(keyDown$, keyPress$, keyUp$).startWith(null);
   const messages$ = message$.fold((messages, message) => {
@@ -416,7 +419,7 @@ function main({ dom, keyboard }) {
       alt: 'num.enter'
     }
   ]);
-  const state$ = xs.combine(messages$, keys$);
+  const state$ = xs.combine(messages$, keys$, shifted$);
   const vtree$ = state$.map(state =>
     div('#root', [
       div('.container', [
@@ -424,9 +427,10 @@ function main({ dom, keyboard }) {
           ul('.log', state[0].map(message => li([message]))),
         ]),
         div('.keyboard', [
-          div('.panel', state[1].map(k =>
+          div(state[2] ? '.shifted.panel' : '.panel', state[1].map(k =>
             div(`.${k.alt || k.name}.key`, [
-              span([k.name])
+              span([k.name]),
+              span('.shifted', k.shift || k.name)
             ])
           ))
         ])
