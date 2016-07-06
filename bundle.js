@@ -13905,6 +13905,58 @@ function main(_ref) {
       shift: '|',
       down: false,
       alt: 'slash'
+    }, {
+      name: 'caps',
+      down: false
+    }, {
+      name: 'a',
+      shift: 'A',
+      down: false
+    }, {
+      name: 's',
+      shift: 'S',
+      down: false
+    }, {
+      name: 'd',
+      shift: 'D',
+      down: false
+    }, {
+      name: 'f',
+      shift: 'F',
+      down: false
+    }, {
+      name: 'g',
+      shift: 'G',
+      down: false
+    }, {
+      name: 'h',
+      shift: 'H',
+      down: false
+    }, {
+      name: 'j',
+      shift: 'J',
+      down: false
+    }, {
+      name: 'k',
+      shift: 'K',
+      down: false
+    }, {
+      name: 'l',
+      shift: 'L',
+      down: false
+    }, {
+      name: ';',
+      shift: ':',
+      down: false,
+      alt: 'colon'
+    }, {
+      name: '\'',
+      shift: '"',
+      down: false,
+      alt: 'quotes'
+    }, {
+      name: 'enter',
+      down: false
     }],
     nav: [],
     numpad: []

@@ -41,7 +41,7 @@ html, body {
 }
 
 .panel {
-    width: 720px;
+    width: 728px;
     margin: 0 auto;
 }
 
@@ -101,6 +101,14 @@ html, body {
 
 .tab.key, .slash.key {
     width: 48px;
+}
+
+.caps.key {
+    width: 56px;
+}
+
+.enter.key {
+    width: 72px;
 }
 
 .navigation.keys {
