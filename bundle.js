@@ -14190,12 +14190,15 @@ function main(_ref) {
     return keys;
   }, []);
   var keyDownMessage$ = keyboard.down$.map(function (e) {
+    e.event.preventDefault();
     return e.displayKey + ' key is down';
   });
   var keyPressMessage$ = keyboard.press$.map(function (e) {
+    e.event.preventDefault();
     return e.displayChar + ' is typed';
   });
   var keyUpMessage$ = keyboard.up$.map(function (e) {
+    e.event.preventDefault();
     return e.displayKey + ' key is up';
   });
   var message$ = _xstream2.default.merge(keyDownMessage$, keyPressMessage$, keyUpMessage$).startWith(null);

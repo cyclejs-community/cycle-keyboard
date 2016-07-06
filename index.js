@@ -13,7 +13,7 @@ function main({ dom, keyboard }) {
   const keyUpId$ = keyboard.up$.map(e => -e.event.keyCode).startWith(0);
   const keysDown$ = xs.merge(keyDownId$, keyUpId$).fold((keys, id) => {
     keys = keys || [];
-    if(!id)
+    if (!id)
       return keys;
     if (id < 0) {
       id *= -1;
@@ -28,9 +28,18 @@ function main({ dom, keyboard }) {
     keys.push(id);
     return keys;
   }, []);
-  const keyDownMessage$ = keyboard.down$.map(e => `${e.displayKey} key is down`);
-  const keyPressMessage$ = keyboard.press$.map(e => `${e.displayChar} is typed`);
-  const keyUpMessage$ = keyboard.up$.map(e => `${e.displayKey} key is up`);
+  const keyDownMessage$ = keyboard.down$.map(e => {
+    e.event.preventDefault();
+    return `${e.displayKey} key is down`;
+  });
+  const keyPressMessage$ = keyboard.press$.map(e => {
+    e.event.preventDefault();
+    return `${e.displayChar} is typed`;
+  });
+  const keyUpMessage$ = keyboard.up$.map(e => {
+    e.event.preventDefault();
+    return `${e.displayKey} key is up`;
+  });
   const message$ = xs.merge(keyDownMessage$, keyPressMessage$, keyUpMessage$).startWith(null);
   const messages$ = message$.fold((messages, message) => {
     messages = messages || [];
