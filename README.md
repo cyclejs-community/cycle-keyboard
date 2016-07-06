@@ -1,7 +1,7 @@
 # cycle-keyboard
 A keyboard driver for cycle.js.
 
-[![npm version](https://img.shields.io/npm/v/cycle-keyboard.svg?maxAge=2592000)](https://img.shields.io/npm/v/cycle-keyboard.svg?maxAge=2592000)[![license](https://img.shields.io/github/license/artfuldev/cycle-keyboard.svg?maxAge=2592000)](https://img.shields.io/github/license/artfuldev/cycle-keyboard.svg?maxAge=2592000)
+[![npm version](https://img.shields.io/npm/v/cycle-keyboard.svg)](https://img.shields.io/npm/v/cycle-keyboard.svg)[![license](https://img.shields.io/github/license/artfuldev/cycle-keyboard.svg)](https://img.shields.io/github/license/artfuldev/cycle-keyboard.svg)
 
 ## Usage
 Install the package using node package manager
@@ -25,10 +25,6 @@ function main({ dom, keyboard}) {
 ```
 
 ## Notes
-The driver provides the streams as `up$`, `down$`, and `press$`(read $ as `stream`).
+The driver provides the streams as `up$`, `down$`, and `press$`(read $ as `stream`). These streams are xstream streams.
 
-The streams are xstream streams.
-
-The events emitted include an additional `displayKey` property which is a string of the key used in the events.
-
-The `keypress` event has an additional `displayChar` property which is a string of the character that was typed.
+The events emitted include the original event in the `event` property, and an additional `displayKey` property which is a string representation of the key used in the events. The `keypress` event has an additional `displayChar` property which is a string of the character that was typed.
