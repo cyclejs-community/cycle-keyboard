@@ -13740,55 +13740,52 @@ function main(_ref) {
   var keys$ = _xstream2.default.of({
     func: [{
       name: 'esc',
-      shift: 'esc',
       down: false
     }, {
       name: 'f1',
-      shift: 'f1',
       down: false
     }, {
       name: 'f2',
-      shift: 'f2',
       down: false
     }, {
       name: 'f3',
-      shift: 'f3',
       down: false
     }, {
       name: 'f4',
-      shift: 'f4',
       down: false
     }, {
       name: 'f5',
-      shift: 'f5',
       down: false
     }, {
       name: 'f6',
-      shift: 'f6',
       down: false
     }, {
       name: 'f7',
-      shift: 'f7',
       down: false
     }, {
       name: 'f8',
-      shift: 'f8',
       down: false
     }, {
       name: 'f9',
-      shift: 'f9',
       down: false
     }, {
       name: 'f10',
-      shift: 'f10',
       down: false
     }, {
       name: 'f11',
-      shift: 'f11',
       down: false
     }, {
       name: 'f12',
-      shift: 'f12',
+      down: false
+    }],
+    status: [{
+      name: 'pscr',
+      down: false
+    }, {
+      name: 'slock',
+      down: false
+    }, {
+      name: 'pause',
       down: false
     }],
     alpha: [{
@@ -13848,9 +13845,66 @@ function main(_ref) {
       alt: 'plus'
     }, {
       name: '<-',
-      shift: '<-',
       down: false,
       alt: 'backspace'
+    }, {
+      name: 'tab',
+      down: false
+    }, {
+      name: 'q',
+      shift: 'Q',
+      down: false
+    }, {
+      name: 'w',
+      shift: 'W',
+      down: false
+    }, {
+      name: 'e',
+      shift: 'E',
+      down: false
+    }, {
+      name: 'r',
+      shift: 'R',
+      down: false
+    }, {
+      name: 't',
+      shift: 'T',
+      down: false
+    }, {
+      name: 'y',
+      shift: 'Y',
+      down: false
+    }, {
+      name: 'u',
+      shift: 'U',
+      down: false
+    }, {
+      name: 'i',
+      shift: 'I',
+      down: false
+    }, {
+      name: 'o',
+      shift: 'O',
+      down: false
+    }, {
+      name: 'p',
+      shift: 'P',
+      down: false
+    }, {
+      name: '[',
+      shift: '{',
+      down: false,
+      alt: 'square.braces.open'
+    }, {
+      name: ']',
+      shift: '}',
+      down: false,
+      alt: 'square.braces.close'
+    }, {
+      name: '\\',
+      shift: '|',
+      down: false,
+      alt: 'slash'
     }],
     nav: [],
     numpad: []
@@ -13859,9 +13913,11 @@ function main(_ref) {
   var vtree$ = state$.map(function (state) {
     return (0, _dom.div)('#root', [(0, _dom.div)('.container', [(0, _dom.div)('.messages', [(0, _dom.ul)('.log', state[0].map(function (message) {
       return (0, _dom.li)([message]);
-    }))]), (0, _dom.div)('.keyboard', [(0, _dom.div)('.panel', [(0, _dom.div)('.function.keys', state[1].func.map(function (k) {
+    }))]), (0, _dom.div)('.keyboard', [(0, _dom.div)('.panel', [(0, _dom.div)('.additional.section', [(0, _dom.div)('.function.keys', state[1].func.map(function (k) {
       return (0, _dom.div)('.' + (k.alt || k.name) + '.key', k.name);
-    })), (0, _dom.div)('.main.section', [(0, _dom.div)('.alphanumeric.keys', state[1].alpha.map(function (k) {
+    })), (0, _dom.div)('.status.keys', state[1].status.map(function (k) {
+      return (0, _dom.div)('.' + (k.alt || k.name) + '.key', k.name);
+    }))]), (0, _dom.div)('.main.section', [(0, _dom.div)('.alphanumeric.keys', state[1].alpha.map(function (k) {
       return (0, _dom.div)('.' + (k.alt || k.name) + '.key', k.name);
     })), (0, _dom.div)('.navigation.keys', state[1].nav.map(function (k) {
       return (0, _dom.div)('.' + (k.alt || k.name) + '.key', k.name);

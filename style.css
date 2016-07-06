@@ -47,8 +47,8 @@ html, body {
 
 .keys {
     margin-top: 8px;
-    margin-left: 16px;
-    margin-right: 16px;
+    margin-left: 0;
+    margin-right: 8px;
     margin-bottom: 16px;
     float: left;
 }
@@ -59,7 +59,6 @@ html, body {
     background: white;
     color: #9c27b0;
     display: inline-block;
-    text-transform: uppercase;
     padding: 8px;
     box-sizing: border-box;
 }
@@ -88,34 +87,26 @@ html, body {
     margin-right: 32px;
 }
 
-.f4.key{
+.f4.key, .f8.key {
     margin-right: 16px;
-}
-
-.f8.key {
-    margin-right: 16px;
-}
-
-.f12.key {
-    margin-right: 8px;
 }
 
 .alphanumeric.keys {
     width: 480px;
-    margin-right: 8px;
 }
 
 .backspace.key {
     width: 64px;
 }
 
+.tab.key, .slash.key {
+    width: 48px;
+}
+
 .navigation.keys {
-    margin-left: 0;
-    margin-right: 8px;
     width: 96px;
 }
 
 .numpad.keys {
-    margin-left: 0;
     width: 128px;
 }
