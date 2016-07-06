@@ -13718,6 +13718,10 @@ var _cycleKeyboard = require('cycle-keyboard');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function drawKey(key, state) {
+  return (0, _dom.div)((state.shifted ? '.shifted' : '') + '.' + (key.alt || key.name) + '.key', [(0, _dom.span)([state.shifted ? key.shift || key.name : key.name])]);
+}
+
 function main(_ref) {
   var dom = _ref.dom;
   var keyboard = _ref.keyboard;
@@ -14046,12 +14050,14 @@ function main(_ref) {
     name: 'enter',
     alt: 'num.enter'
   }]);
-  var state$ = _xstream2.default.combine(messages$, keys$, shifted$);
+  var state$ = _xstream2.default.combine(messages$, keys$, shifted$).map(function (a) {
+    return { messages: a[0], keys: a[1], shifted: a[2] };
+  });
   var vtree$ = state$.map(function (state) {
-    return (0, _dom.div)('#root', [(0, _dom.div)('.container', [(0, _dom.div)('.messages', [(0, _dom.ul)('.log', state[0].map(function (message) {
+    return (0, _dom.div)('#root', [(0, _dom.div)('.container', [(0, _dom.div)('.messages', [(0, _dom.ul)('.log', state.messages.map(function (message) {
       return (0, _dom.li)([message]);
-    }))]), (0, _dom.div)('.keyboard', [(0, _dom.div)(state[2] ? '.shifted.panel' : '.panel', state[1].map(function (k) {
-      return (0, _dom.div)('.' + (k.alt || k.name) + '.key', [(0, _dom.span)([k.name]), (0, _dom.span)('.shifted', k.shift || k.name)]);
+    }))]), (0, _dom.div)('.keyboard', [(0, _dom.div)('.panel', state.keys.map(function (k) {
+      return drawKey(k, state);
     }))])])]);
   });
   var sinks = {
