@@ -56,7 +56,7 @@ function main({ dom, keyboard }) {
     messages.push(message);
     return messages;
   }, []);
-  const keys$ = xs.of([
+  const keys = [
     {
       name: 'esc',
       code: 27
@@ -566,9 +566,9 @@ function main({ dom, keyboard }) {
       alt: 'num.enter',
       code: 13
     }
-  ]);
-  const state$ = xs.combine(messages$, keys$, shifted$, keysDown$).map(a => {
-    return { messages: a[0], keys: a[1], shifted: a[2], keysDown: a[3] }
+  ];
+  const state$ = xs.combine(messages$, shifted$, keysDown$).map(a => {
+    return { messages: a[0], shifted: a[1], keysDown: a[2] }
   });
   const vtree$ = state$.map(state =>
     div('#root', [
@@ -577,7 +577,7 @@ function main({ dom, keyboard }) {
           ul('.log', state.messages.map(message => li([message]))),
         ]),
         div('.keyboard', [
-          div('.panel', state.keys.map(k => drawKey(k, state)))
+          div('.panel', keys.map(k => drawKey(k, state)))
         ])
       ])
     ])

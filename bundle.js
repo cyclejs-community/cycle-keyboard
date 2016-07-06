@@ -13788,7 +13788,7 @@ function main(_ref) {
     messages.push(message);
     return messages;
   }, []);
-  var keys$ = _xstream2.default.of([{
+  var keys = [{
     name: 'esc',
     code: 27
   }, {
@@ -14194,14 +14194,14 @@ function main(_ref) {
     name: 'enter',
     alt: 'num.enter',
     code: 13
-  }]);
-  var state$ = _xstream2.default.combine(messages$, keys$, shifted$, keysDown$).map(function (a) {
-    return { messages: a[0], keys: a[1], shifted: a[2], keysDown: a[3] };
+  }];
+  var state$ = _xstream2.default.combine(messages$, shifted$, keysDown$).map(function (a) {
+    return { messages: a[0], shifted: a[1], keysDown: a[2] };
   });
   var vtree$ = state$.map(function (state) {
     return (0, _dom.div)('#root', [(0, _dom.div)('.container', [(0, _dom.div)('.messages', [(0, _dom.ul)('.log', state.messages.map(function (message) {
       return (0, _dom.li)([message]);
-    }))]), (0, _dom.div)('.keyboard', [(0, _dom.div)('.panel', state.keys.map(function (k) {
+    }))]), (0, _dom.div)('.keyboard', [(0, _dom.div)('.panel', keys.map(function (k) {
       return drawKey(k, state);
     }))])])]);
   });
