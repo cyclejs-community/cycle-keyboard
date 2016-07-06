@@ -106,18 +106,6 @@ html {
     border: 1px solid white;
 }
 
-.key .shifted {
-    display: none;
-}
-
-.shifted.panel .key span {
-    display: none;
-}
-
-.shifted.panel .key span.shifted {
-    display: inline;
-}
-
 .f1.key {
     margin-left: 4%;
 }
