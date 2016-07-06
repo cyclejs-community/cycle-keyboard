@@ -26,8 +26,8 @@ function main({ dom, keyboard }) {
   const shiftKeyDown$ = keyboard.down$.filter(e => e.displayKey == 'shift').map(x => true);
   const shiftKeyUp$ = keyboard.up$.filter(e => e.displayKey == 'shift').map(x => false);
   const shifted$ = xs.merge(shiftKeyDown$, shiftKeyUp$).startWith(false);
-  const keyDownId$ = keyboard.down$.map(e => e.keyCode);
-  const keyUpId$ = keyboard.up$.map(e => -e.keyCode).startWith(0);
+  const keyDownId$ = keyboard.down$.map(e => e.event.keyCode);
+  const keyUpId$ = keyboard.up$.map(e => -e.event.keyCode).startWith(0);
   const keysDown$ = xs.merge(keyDownId$, keyUpId$).fold((keys, id) => {
     keys = keys || [];
     if(!id)

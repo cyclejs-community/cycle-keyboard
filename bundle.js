@@ -11789,16 +11789,23 @@ function makeKeyboardDriver() {
     var keyUp$ = _xstream2.default.create();
     var keyPress$ = _xstream2.default.create();
     document.addEventListener('keydown', function (event) {
-      return keyDown$.shamefullySendNext(Object.assign({ displayKey: (0, _utils.getDisplayKey)(event) }, event));
+      return keyDown$.shamefullySendNext({
+        event: event,
+        displayKey: (0, _utils.getDisplayKey)(event)
+      });
     });
     document.addEventListener('keyup', function (event) {
-      return keyUp$.shamefullySendNext(Object.assign({ displayKey: (0, _utils.getDisplayKey)(event) }, event));
+      return keyUp$.shamefullySendNext({
+        event: event,
+        displayKey: (0, _utils.getDisplayKey)(event)
+      });
     });
     document.addEventListener('keypress', function (event) {
-      return keyPress$.shamefullySendNext(Object.assign({
+      return keyPress$.shamefullySendNext({
+        event: event,
         displayKey: (0, _utils.getDisplayKey)(event),
         displayChar: (0, _utils.getDisplayChar)(event)
-      }, event));
+      });
     });
     var sinks = {
       down$: keyDown$,
@@ -13746,10 +13753,10 @@ function main(_ref) {
   });
   var shifted$ = _xstream2.default.merge(shiftKeyDown$, shiftKeyUp$).startWith(false);
   var keyDownId$ = keyboard.down$.map(function (e) {
-    return e.keyCode;
+    return e.event.keyCode;
   });
   var keyUpId$ = keyboard.up$.map(function (e) {
-    return -e.keyCode;
+    return -e.event.keyCode;
   }).startWith(0);
   var keysDown$ = _xstream2.default.merge(keyDownId$, keyUpId$).fold(function (keys, id) {
     keys = keys || [];
