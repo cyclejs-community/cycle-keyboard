@@ -33,7 +33,7 @@ html {
 .messages {
     height: 50%;
     overflow: hidden;
-    overflow-y: scroll;
+    overflow-y: auto;
     margin: 20px;
 }
 
