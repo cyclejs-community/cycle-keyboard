@@ -1,7 +1,7 @@
 import "babel-polyfill";
 import xs from 'xstream';
 import { run } from '@cycle/xstream-run';
-import { div, label, input, hr, ul, li, makeDOMDriver } from '@cycle/dom';
+import { div, ul, li, span, makeDOMDriver } from '@cycle/dom';
 import { makeKeyboardDriver } from 'cycle-keyboard';
 function main({ dom, keyboard }) {
   const keyDown$ = keyboard.down$.map(e => `${e.displayKey} key is down`);
@@ -146,7 +146,7 @@ function main({ dom, keyboard }) {
     },
     {
       name: '/',
-      alt: 'num.slash'
+      alt: 'num.backslash'
     },
     {
       name: '*',
@@ -425,7 +425,9 @@ function main({ dom, keyboard }) {
         ]),
         div('.keyboard', [
           div('.panel', state[1].map(k =>
-            div(`.${k.alt || k.name}.key`, k.name)
+            div(`.${k.alt || k.name}.key`, [
+              span([k.name])
+            ])
           ))
         ])
       ])

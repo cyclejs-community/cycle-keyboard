@@ -71,7 +71,7 @@ html {
     float: left;
 }
 
-.key, .num.slash.key {
+.key {
     height: 4%;
     width: 4%;
     background: white;
@@ -80,6 +80,17 @@ html {
     padding: 2%;
     box-sizing: border-box;
     float: left;
+    position: relative
+}
+
+.key span {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 4px;
+    border: 1px solid #9c27b0;
 }
 
 .f1.key {

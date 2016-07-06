@@ -13834,7 +13834,7 @@ function main(_ref) {
     name: 'num lock'
   }, {
     name: '/',
-    alt: 'num.slash'
+    alt: 'num.backslash'
   }, {
     name: '*',
     alt: 'num.star'
@@ -14040,7 +14040,7 @@ function main(_ref) {
     return (0, _dom.div)('#root', [(0, _dom.div)('.container', [(0, _dom.div)('.messages', [(0, _dom.ul)('.log', state[0].map(function (message) {
       return (0, _dom.li)([message]);
     }))]), (0, _dom.div)('.keyboard', [(0, _dom.div)('.panel', state[1].map(function (k) {
-      return (0, _dom.div)('.' + (k.alt || k.name) + '.key', k.name);
+      return (0, _dom.div)('.' + (k.alt || k.name) + '.key', [(0, _dom.span)([k.name])]);
     }))])])]);
   });
   var sinks = {
