@@ -3,7 +3,7 @@ import xs from 'xstream';
 import { run } from '@cycle/xstream-run';
 import { div, ul, li, span, makeDOMDriver } from '@cycle/dom';
 import { makeKeyboardDriver } from 'cycle-keyboard';
-import { keys, drawKey } from './keyboard';
+import { keys, drawKey, allowedKeyCodes } from './keyboard';
 
 function main({ dom, keyboard }) {
   const shiftKeyDown$ = keyboard.down$.filter(e => e.displayKey == 'shift').map(x => true);
@@ -29,15 +29,14 @@ function main({ dom, keyboard }) {
     return keys;
   }, []);
   const keyDownMessage$ = keyboard.down$.map(e => {
-    e.event.preventDefault();
+    if(allowedKeyCodes.indexOf(e.event.keyCode) === -1)
+      e.event.preventDefault();
     return `${e.displayKey} key is down`;
   });
-  const keyPressMessage$ = keyboard.press$.map(e => {
-    e.event.preventDefault();
-    return `${e.displayChar} is typed`;
-  });
+  const keyPressMessage$ = keyboard.press$.map(e => `${e.displayChar} is typed`);
   const keyUpMessage$ = keyboard.up$.map(e => {
-    e.event.preventDefault();
+    if(allowedKeyCodes.indexOf(e.event.keyCode) === -1)
+      e.event.preventDefault();
     return `${e.displayKey} key is up`;
   });
   const message$ = xs.merge(keyDownMessage$, keyPressMessage$, keyUpMessage$).startWith(null);

@@ -423,7 +423,32 @@ function drawKey(key, state) {
   return (0, _dom.div)(classNames, [(0, _dom.span)([state.shifted ? key.shift || key.name : key.name])]);
 }
 
-module.exports = { keys: keys, drawKey: drawKey };
+var allowedKeyCodes = [
+// 0-9
+48, 49, 60, 51, 52, 53, 54, 55, 56, 57,
+
+// -, =
+187, 189,
+
+// a-z
+65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90,
+
+// caps, shift
+20, 16,
+
+// braces and backslash
+219, 221, 220,
+
+// semi-colon, quotes, comma, period, slash
+186, 222, 188, 190, 191,
+
+// numpad
+110, 194, 108, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 109, 111,
+
+// tilde
+192, 223];
+
+module.exports = { keys: keys, drawKey: drawKey, allowedKeyCodes: allowedKeyCodes };
 
 },{"@cycle/dom":11}],2:[function(require,module,exports){
 "use strict";
@@ -14190,15 +14215,14 @@ function main(_ref) {
     return keys;
   }, []);
   var keyDownMessage$ = keyboard.down$.map(function (e) {
-    e.event.preventDefault();
+    if (_keyboard.allowedKeyCodes.indexOf(e.event.keyCode) === -1) e.event.preventDefault();
     return e.displayKey + ' key is down';
   });
   var keyPressMessage$ = keyboard.press$.map(function (e) {
-    e.event.preventDefault();
     return e.displayChar + ' is typed';
   });
   var keyUpMessage$ = keyboard.up$.map(function (e) {
-    e.event.preventDefault();
+    if (_keyboard.allowedKeyCodes.indexOf(e.event.keyCode) === -1) e.event.preventDefault();
     return e.displayKey + ' key is up';
   });
   var message$ = _xstream2.default.merge(keyDownMessage$, keyPressMessage$, keyUpMessage$).startWith(null);

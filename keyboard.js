@@ -530,4 +530,88 @@ function drawKey(key, state) {
   ]);
 }
 
-module.exports = { keys, drawKey };
+const allowedKeyCodes = [
+    // 0-9
+    48,
+    49,
+    60,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+
+    // -, =
+    187,
+    189,
+
+    // a-z
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    90,
+
+    // caps, shift
+    20,
+    16,
+
+    // braces and backslash
+    219,
+    221,
+    220,
+
+    // semi-colon, quotes, comma, period, slash
+    186,
+    222,
+    188,
+    190,
+    191,
+
+    // numpad
+    110,
+    194,
+    108,
+    96,
+    97,
+    98,
+    99,
+    100,
+    101,
+    102,
+    103,
+    104,
+    105,
+    106,
+    109,
+    111,
+
+    // tilde
+    192,
+    223,
+];
+
+module.exports = { keys, drawKey, allowedKeyCodes };
