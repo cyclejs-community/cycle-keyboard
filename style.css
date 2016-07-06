@@ -127,7 +127,7 @@ html {
     width: 8%;
 }
 
-.tab.key, .slash.key, .ctrl.key, .win.key, .alt.key {
+.tab.key, .backslash.key, .ctrl.key, .win.key, .alt.key {
     width: 6%;
 }
 
@@ -143,7 +143,7 @@ html {
     margin-left: 20%;
 }
 
-.num.plus.key, .num.enter.key {
+.num.add.key, .num.enter.key {
     margin-top: -4%;
     padding-top: 6%;
     width: 4%;
