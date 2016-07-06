@@ -6,10 +6,8 @@ html, body {
     padding: 0;
 }
 
-.messages.container {
+.container {
     margin: 0 auto;
-    overflow: hidden;
-    overflow-y: scroll;
     padding: 1em; 
     width: 100%;
     position: absolute;
@@ -19,15 +17,105 @@ html, body {
     transform: translate(-50%, -50%);
 }
 
-.log {
+.messages {
+    height: 50%;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.messages .log {
     text-align: center;
     list-style-type: none;
     margin: 0;
     padding: 0;
 }
 
-.log li {
+.messages .log li {
     vertical-align: middle;
     font-size: 2em;
     color: white;
+}
+
+.keyboard {
+    height: 50%;
+}
+
+.panel {
+    width: 720px;
+    margin: 0 auto;
+}
+
+.keys {
+    margin-top: 8px;
+    margin-left: 16px;
+    margin-right: 16px;
+    margin-bottom: 16px;
+    float: left;
+}
+
+.key {
+    height: 32px;
+    width: 32px;
+    background: white;
+    color: #9c27b0;
+    display: inline-block;
+    text-transform: uppercase;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+.one.and.quarter {
+    width: 40px;
+}
+
+.one.and.half {
+    width: 48px;
+}
+
+.two {
+    width: 64px;
+}
+
+.two.and.quarter {
+    width: 72px;
+}
+
+.two.and.three.quarters {
+    width: 88px;
+}
+
+.esc.key {
+    margin-right: 32px;
+}
+
+.f4.key{
+    margin-right: 16px;
+}
+
+.f8.key {
+    margin-right: 16px;
+}
+
+.f12.key {
+    margin-right: 8px;
+}
+
+.alphanumeric.keys {
+    width: 480px;
+    margin-right: 8px;
+}
+
+.backspace.key {
+    width: 64px;
+}
+
+.navigation.keys {
+    margin-left: 0;
+    margin-right: 8px;
+    width: 96px;
+}
+
+.numpad.keys {
+    margin-left: 0;
+    width: 128px;
 }

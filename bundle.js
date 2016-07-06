@@ -13737,10 +13737,137 @@ function main(_ref) {
     messages.push(message);
     return messages;
   }, []);
-  var vtree$ = messages$.map(function (messages) {
-    return (0, _dom.div)('#root', [(0, _dom.div)('.messages.container', [(0, _dom.ul)('.log', messages.map(function (message) {
+  var keys$ = _xstream2.default.of({
+    func: [{
+      name: 'esc',
+      shift: 'esc',
+      down: false
+    }, {
+      name: 'f1',
+      shift: 'f1',
+      down: false
+    }, {
+      name: 'f2',
+      shift: 'f2',
+      down: false
+    }, {
+      name: 'f3',
+      shift: 'f3',
+      down: false
+    }, {
+      name: 'f4',
+      shift: 'f4',
+      down: false
+    }, {
+      name: 'f5',
+      shift: 'f5',
+      down: false
+    }, {
+      name: 'f6',
+      shift: 'f6',
+      down: false
+    }, {
+      name: 'f7',
+      shift: 'f7',
+      down: false
+    }, {
+      name: 'f8',
+      shift: 'f8',
+      down: false
+    }, {
+      name: 'f9',
+      shift: 'f9',
+      down: false
+    }, {
+      name: 'f10',
+      shift: 'f10',
+      down: false
+    }, {
+      name: 'f11',
+      shift: 'f11',
+      down: false
+    }, {
+      name: 'f12',
+      shift: 'f12',
+      down: false
+    }],
+    alpha: [{
+      name: '`',
+      shift: '~',
+      down: false,
+      alt: 'tilde'
+    }, {
+      name: '1',
+      shift: '!',
+      down: false
+    }, {
+      name: '2',
+      shift: '@',
+      down: false
+    }, {
+      name: '3',
+      shift: '#',
+      down: false
+    }, {
+      name: '4',
+      shift: '$',
+      down: false
+    }, {
+      name: '5',
+      shift: '%',
+      down: false
+    }, {
+      name: '6',
+      shift: '^',
+      down: false
+    }, {
+      name: '7',
+      shift: '&',
+      down: false
+    }, {
+      name: '8',
+      shift: '*',
+      down: false
+    }, {
+      name: '9',
+      shift: '(',
+      down: false
+    }, {
+      name: '0',
+      shift: ')',
+      down: false
+    }, {
+      name: '-',
+      shift: '_',
+      down: false,
+      alt: 'hyphen'
+    }, {
+      name: '+',
+      shift: '=',
+      down: false,
+      alt: 'plus'
+    }, {
+      name: '<-',
+      shift: '<-',
+      down: false,
+      alt: 'backspace'
+    }],
+    nav: [],
+    numpad: []
+  });
+  var state$ = _xstream2.default.combine(messages$, keys$);
+  var vtree$ = state$.map(function (state) {
+    return (0, _dom.div)('#root', [(0, _dom.div)('.container', [(0, _dom.div)('.messages', [(0, _dom.ul)('.log', state[0].map(function (message) {
       return (0, _dom.li)([message]);
-    }))])]);
+    }))]), (0, _dom.div)('.keyboard', [(0, _dom.div)('.panel', [(0, _dom.div)('.function.keys', state[1].func.map(function (k) {
+      return (0, _dom.div)('.' + (k.alt || k.name) + '.key', k.name);
+    })), (0, _dom.div)('.main.section', [(0, _dom.div)('.alphanumeric.keys', state[1].alpha.map(function (k) {
+      return (0, _dom.div)('.' + (k.alt || k.name) + '.key', k.name);
+    })), (0, _dom.div)('.navigation.keys', state[1].nav.map(function (k) {
+      return (0, _dom.div)('.' + (k.alt || k.name) + '.key', k.name);
+    })), (0, _dom.div)('.numpad.keys', state[1].numpad.map(function (k) {
+      return (0, _dom.div)('.' + (k.alt || k.name) + '.key', k.name);
+    }))])])])])]);
   });
   var sinks = {
     dom: vtree$
