@@ -23,7 +23,12 @@ function main({ dom, keyboard}) {
   const keyUp$ = keyboard.up$.map(ev => ev.displayKey + ' was pressed');
 }
 ```
+
+## Notes
 The driver provides the streams as `up$`, `down$`, and `press$`(read $ as `stream`).
+
 The streams are xstream streams.
+
 The events emitted include an additional `displayKey` property which is a string of the key used in the events.
+
 The `keypress` event has an additional `displayChar` property which is a string of the character that was typed.
