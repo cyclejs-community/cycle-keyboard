@@ -6,6 +6,18 @@ html, body {
     padding: 0;
 }
 
+html {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    -webkit-box-sizing: inherit;
+    -moz-box-sizing: inherit;
+    box-sizing: inherit;
+}
+
 .container {
     margin: 0 auto;
     padding: 1em; 
@@ -36,85 +48,109 @@ html, body {
     color: white;
 }
 
+/* refer http://www.wasdkeyboards.com/media/keycap_layout.jpg */
+
 .keyboard {
     height: 50%;
 }
 
 .panel {
-    width: 728px;
+    max-width: 1280px;
     margin: 0 auto;
 }
 
+.panel {
+    overflow: auto;
+}
+
 .keys {
-    margin-top: 8px;
+    margin-top: 1%;
     margin-left: 0;
-    margin-right: 8px;
-    margin-bottom: 16px;
+    margin-right: 1%;
+    margin-bottom: 2%;
     float: left;
 }
 
-.key {
-    height: 32px;
-    width: 32px;
+.key, .num.slash.key {
+    height: 4%;
+    width: 4%;
     background: white;
     color: #9c27b0;
-    display: inline-block;
-    padding: 8px;
+    display: block;
+    padding: 2%;
     box-sizing: border-box;
+    float: left;
 }
 
-.one.and.quarter {
-    width: 40px;
+.f1.key {
+    margin-left: 4%;
 }
 
-.one.and.half {
-    width: 48px;
+.f5.key, .f9.key {
+    margin-left: 2%;
 }
 
-.two {
-    width: 64px;
+.pscr.key, .pgup.key, .num.lock.key, .pgdn.key, .num.seven.key, .left.arrow.key, .num.zero.key {
+    margin-left: 4%;
 }
 
-.two.and.quarter {
-    width: 72px;
-}
-
-.two.and.three.quarters {
-    width: 88px;
-}
-
-.esc.key {
-    margin-right: 32px;
-}
-
-.f4.key, .f8.key {
-    margin-right: 16px;
-}
-
-.alphanumeric.keys {
-    width: 480px;
+.esc.key, .tilde.key, .tab.key, .caps.key, .shift.key, .ctrl.key {
+    clear: left;
+    margin-left: 2%;
 }
 
 .backspace.key {
-    width: 64px;
+    width: 8%;
 }
 
-.tab.key, .slash.key {
-    width: 48px;
+.tab.key, .slash.key, .ctrl.key, .win.key, .alt.key {
+    width: 6%;
 }
 
 .caps.key {
-    width: 56px;
+    width: 7%;
 }
 
-.enter.key {
-    width: 72px;
+.enter.key, .shift.key {
+    width: 9%;
+}
+
+.num.four.key {
+    margin-left: 20%;
+}
+
+.num.plus.key, .num.enter.key {
+    margin-top: -4%;
+    padding-top: 6%;
+    width: 4%;
+}
+
+.right.shift.key {
+    width: 11%;
+}
+
+.right.ctrl.key, .right.shift.key {
+    clear: none;
+    margin-left: 0;
+}
+
+.space.key {
+    width: 24%;
 }
 
 .navigation.keys {
-    width: 96px;
+    width: 13%;
 }
 
-.numpad.keys {
-    width: 128px;
+.up.arrow.key , .num.one.key {
+    margin-left: 8%;
+}
+
+.left.arrow.key::before {
+    content: '';
+    clear: both;
+}
+
+.num.zero.key {
+    width: 8%;
 }

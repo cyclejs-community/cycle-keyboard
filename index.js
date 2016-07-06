@@ -3,7 +3,6 @@ import xs from 'xstream';
 import { run } from '@cycle/xstream-run';
 import { div, label, input, hr, ul, li, makeDOMDriver } from '@cycle/dom';
 import { makeKeyboardDriver } from 'cycle-keyboard';
-
 function main({ dom, keyboard }) {
   const keyDown$ = keyboard.down$.map(e => `${e.displayKey} key is down`);
   const keyPress$ = keyboard.press$.map(e => `${e.displayKey} key is pressed, ${e.displayChar} is typed`);
@@ -15,290 +14,408 @@ function main({ dom, keyboard }) {
     messages.push(message);
     return messages;
   }, []);
-  const keys$ = xs.of({
-    func: [
-      {
-        name: 'esc',
-        down: false
-      },
-      {
-        name: 'f1',
-        down: false
-      },
-      {
-        name: 'f2',
-        down: false
-      },
-      {
-        name: 'f3',
-        down: false
-      },
-      {
-        name: 'f4',
-        down: false
-      },
-      {
-        name: 'f5',
-        down: false
-      },
-      {
-        name: 'f6',
-        down: false
-      },
-      {
-        name: 'f7',
-        down: false
-      },
-      {
-        name: 'f8',
-        down: false
-      },
-      {
-        name: 'f9',
-        down: false
-      },
-      {
-        name: 'f10',
-        down: false
-      },
-      {
-        name: 'f11',
-        down: false
-      },
-      {
-        name: 'f12',
-        down: false
-      }
-    ],
-    status: [
-      {
-        name: 'pscr',
-        down: false
-      },
-      {
-        name: 'slock',
-        down: false
-      },
-      {
-        name: 'pause',
-        down: false
-      }
-    ],
-    alpha: [
-      {
-        name: '`',
-        shift: '~',
-        down: false,
-        alt: 'tilde'
-      },
-      {
-        name: '1',
-        shift: '!',
-        down: false,
-      },
-      {
-        name: '2',
-        shift: '@',
-        down: false
-      },
-      {
-        name: '3',
-        shift: '#',
-        down: false
-      },
-      {
-        name: '4',
-        shift: '$',
-        down: false
-      },
-      {
-        name: '5',
-        shift: '%',
-        down: false
-      },
-      {
-        name: '6',
-        shift: '^',
-        down: false
-      },
-      {
-        name: '7',
-        shift: '&',
-        down: false
-      },
-      {
-        name: '8',
-        shift: '*',
-        down: false
-      },
-      {
-        name: '9',
-        shift: '(',
-        down: false
-      },
-      {
-        name: '0',
-        shift: ')',
-        down: false
-      },
-      {
-        name: '-',
-        shift: '_',
-        down: false,
-        alt: 'hyphen'
-      },
-      {
-        name: '+',
-        shift: '=',
-        down: false,
-        alt: 'plus'
-      },
-      {
-        name: '<-',
-        down: false,
-        alt: 'backspace'
-      },
-      {
-        name: 'tab',
-        down: false,
-      },
-      {
-        name: 'q',
-        shift: 'Q',
-        down: false
-      },
-      {
-        name: 'w',
-        shift: 'W',
-        down: false
-      },
-      {
-        name: 'e',
-        shift: 'E',
-        down: false
-      },
-      {
-        name: 'r',
-        shift: 'R',
-        down: false
-      },
-      {
-        name: 't',
-        shift: 'T',
-        down: false
-      },
-      {
-        name: 'y',
-        shift: 'Y',
-        down: false
-      },
-      {
-        name: 'u',
-        shift: 'U',
-        down: false
-      },
-      {
-        name: 'i',
-        shift: 'I',
-        down: false
-      },
-      {
-        name: 'o',
-        shift: 'O',
-        down: false
-      },
-      {
-        name: 'p',
-        shift: 'P',
-        down: false
-      },
-      {
-        name: '[',
-        shift: '{',
-        down: false,
-        alt: 'square.braces.open'
-      },
-      {
-        name: ']',
-        shift: '}',
-        down: false,
-        alt: 'square.braces.close'
-      },
-      {
-        name: '\\',
-        shift: '|',
-        down: false,
-        alt: 'slash'
-      },
-      {
-        name: 'caps',
-        down: false,
-      },
-      {
-        name: 'a',
-        shift: 'A',
-        down: false
-      },
-      {
-        name: 's',
-        shift: 'S',
-        down: false
-      },
-      {
-        name: 'd',
-        shift: 'D',
-        down: false
-      },
-      {
-        name: 'f',
-        shift: 'F',
-        down: false
-      },
-      {
-        name: 'g',
-        shift: 'G',
-        down: false
-      },
-      {
-        name: 'h',
-        shift: 'H',
-        down: false
-      },
-      {
-        name: 'j',
-        shift: 'J',
-        down: false
-      },
-      {
-        name: 'k',
-        shift: 'K',
-        down: false
-      },
-      {
-        name: 'l',
-        shift: 'L',
-        down: false
-      },
-      {
-        name: ';',
-        shift: ':',
-        down: false,
-        alt: 'colon'
-      },
-      {
-        name: '\'',
-        shift: '"',
-        down: false,
-        alt: 'quotes'
-      },
-      {
-        name: 'enter',
-        down: false
-      }
-    ],
-    nav: [],
-    numpad: []
-  });
+  const keys$ = xs.of([
+    {
+      name: 'esc',
+    },
+    {
+      name: 'f1',
+    },
+    {
+      name: 'f2',
+    },
+    {
+      name: 'f3',
+    },
+    {
+      name: 'f4',
+    },
+    {
+      name: 'f5',
+    },
+    {
+      name: 'f6',
+    },
+    {
+      name: 'f7',
+    },
+    {
+      name: 'f8',
+    },
+    {
+      name: 'f9',
+    },
+    {
+      name: 'f10',
+    },
+    {
+      name: 'f11',
+    },
+    {
+      name: 'f12',
+    },
+    {
+      name: 'pscr',
+    },
+    {
+      name: 'slock',
+    },
+    {
+      name: 'pause',
+    },
+    {
+      name: '`',
+      shift: '~',
+      alt: 'tilde'
+    },
+    {
+      name: '1',
+      shift: '!',
+      alt: 'one'
+    },
+    {
+      name: '2',
+      shift: '@',
+      alt: 'two'
+    },
+    {
+      name: '3',
+      shift: '#',
+      alt: 'three'
+    },
+    {
+      name: '4',
+      shift: '$',
+      alt: 'four'
+    },
+    {
+      name: '5',
+      shift: '%',
+      alt: 'five'
+    },
+    {
+      name: '6',
+      shift: '^',
+      alt: 'six'
+    },
+    {
+      name: '7',
+      shift: '&',
+      alt: 'seven'
+    },
+    {
+      name: '8',
+      shift: '*',
+      alt: 'eight'
+    },
+    {
+      name: '9',
+      shift: '(',
+      alt: 'nine'
+    },
+    {
+      name: '0',
+      shift: ')',
+      alt: 'zero'
+    },
+    {
+      name: '-',
+      shift: '_',
+      alt: 'hyphen'
+    },
+    {
+      name: '+',
+      shift: '=',
+      alt: 'plus'
+    },
+    {
+      name: '<-',
+      alt: 'backspace'
+    },
+    {
+      name: 'pgup',
+    },
+    {
+      name: 'home',
+    },
+    {
+      name: 'ins',
+    },
+    {
+      name: 'num lock',
+    },
+    {
+      name: '/',
+      alt: 'num.slash'
+    },
+    {
+      name: '*',
+      alt: 'num.star'
+    },
+    {
+      name: '-',
+      alt: 'minus'
+    },
+    {
+      name: 'tab',
+    },
+    {
+      name: 'q',
+      shift: 'Q',
+    },
+    {
+      name: 'w',
+      shift: 'W',
+    },
+    {
+      name: 'e',
+      shift: 'E',
+    },
+    {
+      name: 'r',
+      shift: 'R',
+    },
+    {
+      name: 't',
+      shift: 'T',
+    },
+    {
+      name: 'y',
+      shift: 'Y',
+    },
+    {
+      name: 'u',
+      shift: 'U',
+    },
+    {
+      name: 'i',
+      shift: 'I',
+    },
+    {
+      name: 'o',
+      shift: 'O',
+    },
+    {
+      name: 'p',
+      shift: 'P',
+    },
+    {
+      name: '[',
+      shift: '{',
+      alt: 'square.braces.open'
+    },
+    {
+      name: ']',
+      shift: '}',
+      alt: 'square.braces.close'
+    },
+    {
+      name: '\\',
+      shift: '|',
+      alt: 'slash'
+    },
+    {
+      name: 'pgdn',
+    },
+    {
+      name: 'end',
+    },
+    {
+      name: 'del',
+    },
+    {
+      name: '7',
+      alt: 'num.seven'
+    },
+    {
+      name: '8',
+      alt: 'num.eight'
+    },
+    {
+      name: '9',
+      alt: 'num.nine'
+    },
+    {
+      name: 'caps',
+    },
+    {
+      name: 'a',
+      shift: 'A',
+    },
+    {
+      name: 's',
+      shift: 'S',
+    },
+    {
+      name: 'd',
+      shift: 'D',
+    },
+    {
+      name: 'f',
+      shift: 'F',
+    },
+    {
+      name: 'g',
+      shift: 'G',
+    },
+    {
+      name: 'h',
+      shift: 'H',
+    },
+    {
+      name: 'j',
+      shift: 'J',
+    },
+    {
+      name: 'k',
+      shift: 'K',
+    },
+    {
+      name: 'l',
+      shift: 'L',
+    },
+    {
+      name: ';',
+      shift: ':',
+      alt: 'colon'
+    },
+    {
+      name: '\'',
+      shift: '"',
+      alt: 'quotes'
+    },
+    {
+      name: 'enter',
+    },
+    {
+      name: '4',
+      alt: 'num.four'
+    },
+    {
+      name: '5',
+      alt: 'num.five'
+    },
+    {
+      name: '6',
+      alt: 'num.six'
+    },
+    {
+      name: '+',
+      alt: 'num.plus'
+    },
+    {
+      name: 'shift',
+    },
+    {
+      name: 'z',
+      shift: 'Z',
+    },
+    {
+      name: 'x',
+      shift: 'X',
+    },
+    {
+      name: 'c',
+      shift: 'C',
+    },
+    {
+      name: 'v',
+      shift: 'V',
+    },
+    {
+      name: 'b',
+      shift: 'B',
+    },
+    {
+      name: 'n',
+      shift: 'N',
+    },
+    {
+      name: 'm',
+      shift: 'M',
+    },
+    {
+      name: ',',
+      shift: '<',
+      alt: 'comma'
+    },
+    {
+      name: '.',
+      shift: '>',
+      alt: 'period'
+    },
+    {
+      name: '/',
+      shift: '?',
+      alt: 'backslash'
+    },
+    {
+      name: 'shift',
+      alt: 'right.shift'
+    },
+    {
+      name: '^',
+      alt: 'up.arrow'
+    },
+    {
+      name: '1',
+      alt: 'num.one'
+    },
+    {
+      name: '2',
+      alt: 'num.two'
+    },
+    {
+      name: '3',
+      alt: 'num.two'
+    },
+    {
+      name: 'ctrl',
+    },
+    {
+      name: 'win',
+    },
+    {
+      name: 'alt',
+    },
+    {
+      name: 'space',
+    },
+    {
+      name: 'ctrl',
+      alt: 'right.ctrl'
+    },
+    {
+      name: 'win',
+    },
+    {
+      name: 'alt',
+    },
+    {
+      name: '<',
+      alt: 'left.arrow'
+    },
+    {
+      name: 'dn',
+      alt: 'down.arrow'
+    },
+    {
+      name: '>',
+      alt: 'right.arrow'
+    },
+    {
+      name: '0',
+      alt: 'num.zero'
+    },
+    {
+      name: '.',
+      alt: '.num.period'
+    },
+    {
+      name: 'enter',
+      alt: 'num.enter'
+    }
+  ]);
   const state$ = xs.combine(messages$, keys$);
   const vtree$ = state$.map(state =>
     div('#root', [
@@ -307,27 +424,9 @@ function main({ dom, keyboard }) {
           ul('.log', state[0].map(message => li([message]))),
         ]),
         div('.keyboard', [
-          div('.panel', [
-            div('.additional.section', [
-              div('.function.keys', state[1].func.map(k =>
-                div(`.${k.alt || k.name}.key`, k.name)
-              )),
-              div('.status.keys', state[1].status.map(k =>
-                div(`.${k.alt || k.name}.key`, k.name)
-              ))
-            ]),
-            div('.main.section', [
-              div('.alphanumeric.keys', state[1].alpha.map(k =>
-                div(`.${k.alt || k.name}.key`, k.name)
-              )),
-              div('.navigation.keys', state[1].nav.map(k =>
-                div(`.${k.alt || k.name}.key`, k.name)
-              )),
-              div('.numpad.keys', state[1].numpad.map(k =>
-                div(`.${k.alt || k.name}.key`, k.name)
-              )),
-            ])
-          ])
+          div('.panel', state[1].map(k =>
+            div(`.${k.alt || k.name}.key`, k.name)
+          ))
         ])
       ])
     ])
@@ -337,10 +436,8 @@ function main({ dom, keyboard }) {
   };
   return sinks;
 }
-
 const drivers = {
   dom: makeDOMDriver('#app'),
   keyboard: makeKeyboardDriver()
 }
-
 run(main, drivers);
