@@ -33,7 +33,7 @@ function main({ dom, keyboard }) {
       e.event.preventDefault();
     return `${e.displayKey} key is down`;
   });
-  const keyPressMessage$ = keyboard.press$.map(e => `${e.displayChar} is typed`);
+  const keyPressMessage$ = keyboard.press$.map(e => `${e.displayChar} is pressed`);
   const keyUpMessage$ = keyboard.up$.map(e => {
     if(allowedKeyCodes.indexOf(e.event.keyCode) === -1)
       e.event.preventDefault();

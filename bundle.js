@@ -14219,7 +14219,7 @@ function main(_ref) {
     return e.displayKey + ' key is down';
   });
   var keyPressMessage$ = keyboard.press$.map(function (e) {
-    return e.displayChar + ' is typed';
+    return e.displayChar + ' is pressed';
   });
   var keyUpMessage$ = keyboard.up$.map(function (e) {
     if (_keyboard.allowedKeyCodes.indexOf(e.event.keyCode) === -1) e.event.preventDefault();
