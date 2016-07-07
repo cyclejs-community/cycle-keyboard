@@ -189,52 +189,42 @@ const keys = [
     },
     {
       name: 'q',
-      shift: 'Q',
       code: 81
     },
     {
       name: 'w',
-      shift: 'W',
       code: 87
     },
     {
       name: 'e',
-      shift: 'E',
       code: 69
     },
     {
       name: 'r',
-      shift: 'R',
       code: 82
     },
     {
       name: 't',
-      shift: 'T',
       code: 84
     },
     {
       name: 'y',
-      shift: 'Y',
       code: 89
     },
     {
       name: 'u',
-      shift: 'U',
       code: 85
     },
     {
       name: 'i',
-      shift: 'I',
       code: 73
     },
     {
       name: 'o',
-      shift: 'O',
       code: 79
     },
     {
       name: 'p',
-      shift: 'P',
       code: 80
     },
     {
@@ -288,47 +278,38 @@ const keys = [
     },
     {
       name: 'a',
-      shift: 'A',
       code: 65
     },
     {
       name: 's',
-      shift: 'S',
       code: 83
     },
     {
       name: 'd',
-      shift: 'D',
       code: 68
     },
     {
       name: 'f',
-      shift: 'F',
       code: 70
     },
     {
       name: 'g',
-      shift: 'G',
       code: 71
     },
     {
       name: 'h',
-      shift: 'H',
       code: 72
     },
     {
       name: 'j',
-      shift: 'J',
       code: 74
     },
     {
       name: 'k',
-      shift: 'K',
       code: 75
     },
     {
       name: 'l',
-      shift: 'L',
       code: 76
     },
     {
@@ -373,37 +354,30 @@ const keys = [
     },
     {
       name: 'z',
-      shift: 'Z',
       code: 90
     },
     {
       name: 'x',
-      shift: 'X',
       code: 88
     },
     {
       name: 'c',
-      shift: 'C',
       code: 67
     },
     {
       name: 'v',
-      shift: 'V',
       code: 86
     },
     {
       name: 'b',
-      shift: 'B',
       code: 66
     },
     {
       name: 'n',
-      shift: 'N',
       code: 78
     },
     {
       name: 'm',
-      shift: 'M',
       code: 77
     },
     {
@@ -527,8 +501,17 @@ function drawKey(key, state) {
   classNames += '.key';
   if(state.capsLock && key.name == 'caps')
     classNames += '.locked';
+  var isAlphabet = key.name.length === 1
+    && 'abcdefghijklmnopqrstuvwxyz'.split('').indexOf(key.name) !== -1;
   return div(classNames, [
-    span([state.shift ? key.shift || key.name : key.name])
+    span([state.shift
+      ? (isAlphabet 
+        ? (state.capsLock ? key.name : key.name.toUpperCase())
+        : key.shift || key.name)
+      : (isAlphabet
+        ? (state.capsLock
+          ? key.name.toUpperCase() : key.name)
+        : key.name)])
   ]);
 }
 
