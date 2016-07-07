@@ -121,8 +121,7 @@ var keys = [{
   alt_code: 59,
   alt_code_2: 61
 }, {
-  name: '<-',
-  alt: 'backspace',
+  name: 'backspace',
   code: 8
 }, {
   name: 'pgup',
@@ -320,7 +319,7 @@ var keys = [{
   alt: 'right.shift',
   code: 16
 }, {
-  name: '^',
+  name: '↑',
   alt: 'up.arrow',
   code: 38
 }, {
@@ -358,15 +357,15 @@ var keys = [{
   alt: 'right.ctrl',
   code: 17
 }, {
-  name: '<',
+  name: '←',
   alt: 'left.arrow',
   code: 37
 }, {
-  name: 'dn',
+  name: '↓',
   alt: 'down.arrow',
   code: 40
 }, {
-  name: '>',
+  name: '→',
   alt: 'right.arrow',
   code: 39
 }, {

@@ -165,6 +165,12 @@ html {
     content: '\25cf';
 }
 
+/*.backspace.key span::before, .arrow.key span::before {
+    position: absolute;
+    top: 4px;
+    left: 4px;    
+}*/
+
 .enter.key, .shift.key {
     width: 9%;
 }
