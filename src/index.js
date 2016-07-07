@@ -20,10 +20,19 @@ function makeKeyboardDriver() {
         displayKey: getDisplayKey(event),
         displayChar: getDisplayChar(event)
       })));
+    const shift$ = xs.merge(
+      keyDown$
+        .filter(e => e.displayKey == 'shift')
+        .map(x => true),
+      keyUp$
+        .filter(e => e.displayKey == 'shift')
+        .map(x => false)
+      ).startWith(null);
     const sinks = {
       down$: keyDown$,
       up$: keyUp$,
-      press$: keyPress$
+      press$: keyPress$,
+      shift$,
     };
     return sinks;
   }
