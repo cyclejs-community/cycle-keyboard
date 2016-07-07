@@ -1,5 +1,5 @@
 # cycle-keyboard
-A keyboard driver for cycle.js.
+A keyboard driver for cycle.js. [View Demo](https://artfuldev.github.io/cycle-keyboard)
 
 [![npm version](https://img.shields.io/npm/v/cycle-keyboard.svg)](https://img.shields.io/npm/v/cycle-keyboard.svg)[![license](https://img.shields.io/github/license/artfuldev/cycle-keyboard.svg)](https://img.shields.io/github/license/artfuldev/cycle-keyboard.svg)
 
