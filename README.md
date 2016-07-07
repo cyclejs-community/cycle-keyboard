@@ -17,14 +17,15 @@ const drivers = {
   keyboard: makeKeyboardDriver()
 }
 ```
-Subscribe to `keyup`, `keydown` and `keypress` event streams on `document`
+Subscribe to keyboard-related event streams on the driver
 ```
 function main({ dom, keyboard}) {
-  const keyUp$ = keyboard.up$.map(ev => ev.displayKey + ' was pressed');
+  const keyUp$ = keyboard.keyUp$.map(ev => ev.displayKey + ' was pressed');
 }
 ```
-
-## Notes
-The driver provides the streams as `up$`, `down$`, and `press$`(read $ as `stream`). These streams are xstream streams.
-
-The events emitted include the original event in the `event` property, and an additional `displayKey` property which is a string representation of the key used in the events. The `keypress` event has an additional `displayChar` property which is a string of the character that was typed.
+The driver provides the following [xstream](https://github.com/staltz/xstream) streams:
+* `keyUp$`, a stream of all keyup events emitted on the document, with an additional `displayKey` property,
+* `keyDown$`, a stream of all keydown events emitted on the document, with an additional `displayKey` property,
+* `keyPress$`, a stream of all keypress events emitted on the document, with additional `displayKey` and `displayChar` properties,
+* `shift$`, a stream of booleans indicating if the shift key is held down, and
+* `capsLock$`, a stream of booleans indicating if the caps lock is on
