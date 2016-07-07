@@ -14229,6 +14229,7 @@ function main(_ref) {
   var messages$ = message$.fold(function (messages, message) {
     messages = messages || [];
     if (!message) return messages;
+    if (messages.length == 5) messages.splice(0, 1);
     messages.push(message);
     return messages;
   }, []);
