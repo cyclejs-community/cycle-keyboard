@@ -19,7 +19,7 @@ const drivers = {
 ```
 Subscribe to keyboard-related event streams on the driver
 ```
-function main({ dom, keyboard}) {
+function main({ ..., keyboard }) {
   const keyUp$ = keyboard.keyUp$.map(ev => ev.displayKey + ' was pressed');
 }
 ```
