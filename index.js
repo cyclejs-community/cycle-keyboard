@@ -6,11 +6,8 @@ import { makeKeyboardDriver } from 'cycle-keyboard';
 import { keys, drawKey, allowedKeyCodes } from './keyboard';
 
 function main({ dom, keyboard }) {
-  const shiftKeyDown$ = keyboard.down$.filter(e => e.displayKey == 'shift').map(x => true);
-  const shiftKeyUp$ = keyboard.up$.filter(e => e.displayKey == 'shift').map(x => false);
-  const shifted$ = xs.merge(shiftKeyDown$, shiftKeyUp$).startWith(false);
-  const keyDownId$ = keyboard.down$.map(e => e.event.keyCode);
-  const keyUpId$ = keyboard.up$.map(e => -e.event.keyCode).startWith(0);
+  const keyDownId$ = keyboard.keyDown$.map(e => e.keyCode);
+  const keyUpId$ = keyboard.keyUp$.map(e => -e.keyCode).startWith(0);
   const keysDown$ = xs.merge(keyDownId$, keyUpId$).fold((keys, id) => {
     keys = keys || [];
     if (!id)
@@ -28,17 +25,17 @@ function main({ dom, keyboard }) {
     keys.push(id);
     return keys;
   }, []);
-  const keyDownMessage$ = keyboard.down$.map(e => {
-    if (allowedKeyCodes.indexOf(e.event.keyCode) === -1
-      || (allowedKeyCodes.indexOf(e.event.keyCode) !== -1 && e.event.ctrlKey))
-      e.event.preventDefault();
+  const keyDownMessage$ = keyboard.keyDown$.map(e => {
+    if (allowedKeyCodes.indexOf(e.keyCode) === -1
+      || (allowedKeyCodes.indexOf(e.keyCode) !== -1 && e.ctrlKey))
+      e.preventDefault();
     return `${e.displayKey} key is down`;
   });
-  const keyPressMessage$ = keyboard.press$.map(e => `${e.displayChar} is pressed`);
-  const keyUpMessage$ = keyboard.up$.map(e => {
-    if (allowedKeyCodes.indexOf(e.event.keyCode) === -1
-      || (allowedKeyCodes.indexOf(e.event.keyCode) !== -1 && e.event.ctrlKey))
-      e.event.preventDefault();
+  const keyPressMessage$ = keyboard.keyPress$.map(e => `${e.displayChar} is pressed`);
+  const keyUpMessage$ = keyboard.keyUp$.map(e => {
+    if (allowedKeyCodes.indexOf(e.keyCode) === -1
+      || (allowedKeyCodes.indexOf(e.keyCode) !== -1 && e.ctrlKey))
+      e.preventDefault();
     return `${e.displayKey} key is up`;
   });
   const message$ = xs.merge(keyDownMessage$, keyPressMessage$, keyUpMessage$).startWith(null);
@@ -51,8 +48,8 @@ function main({ dom, keyboard }) {
     messages.push(message);
     return messages;
   }, []);
-  const state$ = xs.combine(messages$, shifted$, keysDown$).map(a => {
-    return { messages: a[0], shifted: a[1], keysDown: a[2] }
+  const state$ = xs.combine(messages$, keyboard.shift$, keyboard.capsLock$, keysDown$).map(a => {
+    return { messages: a[0], shift: a[1], capsLock: a[2], keysDown: a[3] }
   });
   const vtree$ = state$.map(state =>
     div('#root', [

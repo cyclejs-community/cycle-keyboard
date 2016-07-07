@@ -514,7 +514,7 @@ const keys = [
 
 function drawKey(key, state) {
   var classNames = '';
-  if (state.shifted)
+  if (state.shift)
     classNames += '.shifted';
   classNames += '.' + (key.alt || key.name);
   var index = state.keysDown.indexOf(key.code);
@@ -525,8 +525,10 @@ function drawKey(key, state) {
   if (index !== -1)
     classNames += '.pressed';
   classNames += '.key';
+  if(state.capsLock && key.name == 'caps')
+    classNames += '.locked';
   return div(classNames, [
-    span([state.shifted ? key.shift || key.name : key.name])
+    span([state.shift ? key.shift || key.name : key.name])
   ]);
 }
 

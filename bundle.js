@@ -413,14 +413,15 @@ var keys = [{
 
 function drawKey(key, state) {
   var classNames = '';
-  if (state.shifted) classNames += '.shifted';
+  if (state.shift) classNames += '.shifted';
   classNames += '.' + (key.alt || key.name);
   var index = state.keysDown.indexOf(key.code);
   if (index === -1) index = state.keysDown.indexOf(key.alt_code);
   if (index === -1) index = state.keysDown.indexOf(key.alt_code_2);
   if (index !== -1) classNames += '.pressed';
   classNames += '.key';
-  return (0, _dom.div)(classNames, [(0, _dom.span)([state.shifted ? key.shift || key.name : key.name])]);
+  if (state.capsLock && key.name == 'caps') classNames += '.locked';
+  return (0, _dom.div)(classNames, [(0, _dom.span)([state.shift ? key.shift || key.name : key.name])]);
 }
 
 var allowedKeyCodes = [
@@ -12241,28 +12242,51 @@ function makeKeyboardDriver() {
     var keyUp$ = _xstream2.default.create();
     var keyPress$ = _xstream2.default.create();
     document.addEventListener('keydown', function (event) {
-      return keyDown$.shamefullySendNext({
-        event: event,
+      return keyDown$.shamefullySendNext(Object.assign(event, {
         displayKey: (0, _utils.getDisplayKey)(event)
-      });
+      }));
     });
     document.addEventListener('keyup', function (event) {
-      return keyUp$.shamefullySendNext({
-        event: event,
+      return keyUp$.shamefullySendNext(Object.assign(event, {
         displayKey: (0, _utils.getDisplayKey)(event)
-      });
+      }));
     });
     document.addEventListener('keypress', function (event) {
-      return keyPress$.shamefullySendNext({
-        event: event,
+      return keyPress$.shamefullySendNext(Object.assign(event, {
         displayKey: (0, _utils.getDisplayKey)(event),
         displayChar: (0, _utils.getDisplayChar)(event)
-      });
+      }));
     });
+    var shift$ = _xstream2.default.merge(keyDown$.filter(function (e) {
+      return e.displayKey == 'shift';
+    }).map(function (e) {
+      return true;
+    }), keyUp$.filter(function (e) {
+      return e.displayKey == 'shift';
+    }).map(function (e) {
+      return false;
+    })).startWith(null);
+    var capsLock = null;
+    var capsLock$ = _xstream2.default.merge(keyDown$.filter(function (e) {
+      return capsLock != null && e.displayKey == 'caps lock';
+    }).map(function (e) {
+      capsLock = !capsLock;
+      return capsLock;
+    }), keyPress$.filter(function (e) {
+      var chr = (0, _utils.getDisplayChar)(e);
+      if (!chr || chr.toLowerCase() == chr.toUpperCase()) return false;
+      return true;
+    }).map(function (e) {
+      var chr = (0, _utils.getDisplayChar)(e);
+      capsLock = chr.toLowerCase() == chr && e.shiftKey || chr.toUpperCase() == chr && !e.shiftKey;
+      return capsLock;
+    })).startWith(capsLock);
     var sinks = {
-      down$: keyDown$,
-      up$: keyUp$,
-      press$: keyPress$
+      keyDown$: keyDown$,
+      keyUp$: keyUp$,
+      keyPress$: keyPress$,
+      shift$: shift$,
+      capsLock$: capsLock$
     };
     return sinks;
   }
@@ -14183,22 +14207,11 @@ function main(_ref) {
   var dom = _ref.dom;
   var keyboard = _ref.keyboard;
 
-  var shiftKeyDown$ = keyboard.down$.filter(function (e) {
-    return e.displayKey == 'shift';
-  }).map(function (x) {
-    return true;
+  var keyDownId$ = keyboard.keyDown$.map(function (e) {
+    return e.keyCode;
   });
-  var shiftKeyUp$ = keyboard.up$.filter(function (e) {
-    return e.displayKey == 'shift';
-  }).map(function (x) {
-    return false;
-  });
-  var shifted$ = _xstream2.default.merge(shiftKeyDown$, shiftKeyUp$).startWith(false);
-  var keyDownId$ = keyboard.down$.map(function (e) {
-    return e.event.keyCode;
-  });
-  var keyUpId$ = keyboard.up$.map(function (e) {
-    return -e.event.keyCode;
+  var keyUpId$ = keyboard.keyUp$.map(function (e) {
+    return -e.keyCode;
   }).startWith(0);
   var keysDown$ = _xstream2.default.merge(keyDownId$, keyUpId$).fold(function (keys, id) {
     keys = keys || [];
@@ -14214,15 +14227,15 @@ function main(_ref) {
     keys.push(id);
     return keys;
   }, []);
-  var keyDownMessage$ = keyboard.down$.map(function (e) {
-    if (_keyboard.allowedKeyCodes.indexOf(e.event.keyCode) === -1 || _keyboard.allowedKeyCodes.indexOf(e.event.keyCode) !== -1 && e.event.ctrlKey) e.event.preventDefault();
+  var keyDownMessage$ = keyboard.keyDown$.map(function (e) {
+    if (_keyboard.allowedKeyCodes.indexOf(e.keyCode) === -1 || _keyboard.allowedKeyCodes.indexOf(e.keyCode) !== -1 && e.ctrlKey) e.preventDefault();
     return e.displayKey + ' key is down';
   });
-  var keyPressMessage$ = keyboard.press$.map(function (e) {
+  var keyPressMessage$ = keyboard.keyPress$.map(function (e) {
     return e.displayChar + ' is pressed';
   });
-  var keyUpMessage$ = keyboard.up$.map(function (e) {
-    if (_keyboard.allowedKeyCodes.indexOf(e.event.keyCode) === -1 || _keyboard.allowedKeyCodes.indexOf(e.event.keyCode) !== -1 && e.event.ctrlKey) e.event.preventDefault();
+  var keyUpMessage$ = keyboard.keyUp$.map(function (e) {
+    if (_keyboard.allowedKeyCodes.indexOf(e.keyCode) === -1 || _keyboard.allowedKeyCodes.indexOf(e.keyCode) !== -1 && e.ctrlKey) e.preventDefault();
     return e.displayKey + ' key is up';
   });
   var message$ = _xstream2.default.merge(keyDownMessage$, keyPressMessage$, keyUpMessage$).startWith(null);
@@ -14233,8 +14246,8 @@ function main(_ref) {
     messages.push(message);
     return messages;
   }, []);
-  var state$ = _xstream2.default.combine(messages$, shifted$, keysDown$).map(function (a) {
-    return { messages: a[0], shifted: a[1], keysDown: a[2] };
+  var state$ = _xstream2.default.combine(messages$, keyboard.shift$, keyboard.capsLock$, keysDown$).map(function (a) {
+    return { messages: a[0], shift: a[1], capsLock: a[2], keysDown: a[3] };
   });
   var vtree$ = state$.map(function (state) {
     return (0, _dom.div)('#root', [(0, _dom.div)('.container', [(0, _dom.div)('.messages', [(0, _dom.ul)('.log', state.messages.length ? state.messages.map(function (message) {

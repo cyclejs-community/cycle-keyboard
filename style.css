@@ -154,6 +154,17 @@ html {
     width: 7%;
 }
 
+.caps.key span::after {
+    content: '\25cb';
+    position: absolute;
+    top: 0;
+    right: 4px;
+}
+
+.caps.key.locked span::after {
+    content: '\25cf';
+}
+
 .enter.key, .shift.key {
     width: 9%;
 }
