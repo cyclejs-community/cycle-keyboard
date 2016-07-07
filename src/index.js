@@ -23,16 +23,37 @@ function makeKeyboardDriver() {
     const shift$ = xs.merge(
       keyDown$
         .filter(e => e.displayKey == 'shift')
-        .map(x => true),
+        .map(e => true),
       keyUp$
         .filter(e => e.displayKey == 'shift')
-        .map(x => false)
-      ).startWith(null);
+        .map(e => false)
+    ).startWith(null);
+    var capsLock = null;
+    const capsLock$ = xs.merge(
+      keyDown$
+        .filter(e => capsLock != null && e.displayKey == 'caps lock')
+        .map(e => {
+          capsLock = !capsLock;
+          return capsLock;
+        }),
+      keyPress$
+        .filter(e => {
+          var chr = getDisplayChar(e);
+          if (!chr || chr.toLowerCase() == chr.toUpperCase())
+            return false;
+          return true;
+        }).map(e => {
+          var chr = getDisplayChar(e);
+          capsLock = (chr.toLowerCase() == chr && e.shiftKey) || (chr.toUpperCase() == chr && !e.shiftKey);
+          return capsLock;
+        })
+    ).startWith(capsLock);
     const sinks = {
-      down$: keyDown$,
-      up$: keyUp$,
-      press$: keyPress$,
+      keyDown$,
+      keyUp$,
+      keyPress$,
       shift$,
+      capsLock$
     };
     return sinks;
   }
