@@ -29,13 +29,15 @@ function main({ dom, keyboard }) {
     return keys;
   }, []);
   const keyDownMessage$ = keyboard.down$.map(e => {
-    if(allowedKeyCodes.indexOf(e.event.keyCode) === -1)
+    if (allowedKeyCodes.indexOf(e.event.keyCode) === -1
+      || (allowedKeyCodes.indexOf(e.event.keyCode) !== -1 && e.event.ctrlKey))
       e.event.preventDefault();
     return `${e.displayKey} key is down`;
   });
   const keyPressMessage$ = keyboard.press$.map(e => `${e.displayChar} is pressed`);
   const keyUpMessage$ = keyboard.up$.map(e => {
-    if(allowedKeyCodes.indexOf(e.event.keyCode) === -1)
+    if (allowedKeyCodes.indexOf(e.event.keyCode) === -1
+      || (allowedKeyCodes.indexOf(e.event.keyCode) !== -1 && e.event.ctrlKey))
       e.event.preventDefault();
     return `${e.displayKey} key is up`;
   });
@@ -44,8 +46,8 @@ function main({ dom, keyboard }) {
     messages = messages || [];
     if (!message)
       return messages;
-    if(messages.length == 5)
-      messages.splice(0,1);
+    if (messages.length == 5)
+      messages.splice(0, 1);
     messages.push(message);
     return messages;
   }, []);
@@ -56,7 +58,9 @@ function main({ dom, keyboard }) {
     div('#root', [
       div('.container', [
         div('.messages', [
-          ul('.log', state.messages.map(message => li([message]))),
+          ul('.log', state.messages.length ? state.messages.map(message => li('.message', message)) : [
+            li('.message', 'use the keyboard')
+          ]),
         ]),
         div('.keyboard', [
           div('.panel', keys.map(k => drawKey(k, state)))

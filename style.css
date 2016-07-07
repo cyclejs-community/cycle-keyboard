@@ -31,39 +31,54 @@ html {
 }
 
 .messages {
-    height: 50%;
-    overflow: hidden;
-    overflow-y: auto;
     margin: 20px;
+    min-height: 210px;
+    position: relative;
 }
 
-.messages .log {
+.log {
     text-align: center;
     list-style-type: none;
     margin: 0;
     padding: 0;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
-.messages .log li {
+.message {
     vertical-align: middle;
     font-size: 2em;
     color: white;
     font-weight: 100;
 }
 
-.messages .log li:last-child {
-    font-size: 4em;
+.message:nth-last-child(n+3) {
+    font-size: 1.5em;
+}
+
+.message:nth-last-child(3) {
+    font-size: 2em;
+}
+
+.message:nth-last-child(2) {
+    font-size: 2.5em;
+}
+
+.message:last-child {
+    font-size: 5em;
 }
 
 /* refer http://www.wasdkeyboards.com/media/keycap_layout.jpg */
 
 .keyboard {
-    height: 50%;
+    padding: 20px;
 }
 
 .panel {
     max-width: 1280px;
-    margin: 0 auto;
+    margin: 20px auto 0;
 }
 
 .panel {

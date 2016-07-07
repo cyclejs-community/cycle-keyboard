@@ -14215,14 +14215,14 @@ function main(_ref) {
     return keys;
   }, []);
   var keyDownMessage$ = keyboard.down$.map(function (e) {
-    if (_keyboard.allowedKeyCodes.indexOf(e.event.keyCode) === -1) e.event.preventDefault();
+    if (_keyboard.allowedKeyCodes.indexOf(e.event.keyCode) === -1 || _keyboard.allowedKeyCodes.indexOf(e.event.keyCode) !== -1 && e.event.ctrlKey) e.event.preventDefault();
     return e.displayKey + ' key is down';
   });
   var keyPressMessage$ = keyboard.press$.map(function (e) {
     return e.displayChar + ' is pressed';
   });
   var keyUpMessage$ = keyboard.up$.map(function (e) {
-    if (_keyboard.allowedKeyCodes.indexOf(e.event.keyCode) === -1) e.event.preventDefault();
+    if (_keyboard.allowedKeyCodes.indexOf(e.event.keyCode) === -1 || _keyboard.allowedKeyCodes.indexOf(e.event.keyCode) !== -1 && e.event.ctrlKey) e.event.preventDefault();
     return e.displayKey + ' key is up';
   });
   var message$ = _xstream2.default.merge(keyDownMessage$, keyPressMessage$, keyUpMessage$).startWith(null);
@@ -14237,9 +14237,9 @@ function main(_ref) {
     return { messages: a[0], shifted: a[1], keysDown: a[2] };
   });
   var vtree$ = state$.map(function (state) {
-    return (0, _dom.div)('#root', [(0, _dom.div)('.container', [(0, _dom.div)('.messages', [(0, _dom.ul)('.log', state.messages.map(function (message) {
-      return (0, _dom.li)([message]);
-    }))]), (0, _dom.div)('.keyboard', [(0, _dom.div)('.panel', _keyboard.keys.map(function (k) {
+    return (0, _dom.div)('#root', [(0, _dom.div)('.container', [(0, _dom.div)('.messages', [(0, _dom.ul)('.log', state.messages.length ? state.messages.map(function (message) {
+      return (0, _dom.li)('.message', message);
+    }) : [(0, _dom.li)('.message', 'use the keyboard')])]), (0, _dom.div)('.keyboard', [(0, _dom.div)('.panel', _keyboard.keys.map(function (k) {
       return (0, _keyboard.drawKey)(k, state);
     }))])])]);
   });
