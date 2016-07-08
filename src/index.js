@@ -35,7 +35,7 @@ function makeKeyboardDriver() {
 
   const KeyboardStatusProducer = function (stream) {
     const producer = {};
-    Object.assign(producer, {streamListener = StreamListener(producer)});
+    Object.assign(producer, {streamListener: StreamListener(producer)});
     Object.assign(producer,
     {
       start: function (listener) {
