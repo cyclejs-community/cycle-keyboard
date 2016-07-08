@@ -93,7 +93,7 @@ function makeKeyboardDriver() {
               return true;
             }).map(e => {
               var chr = getDisplayChar(e);
-              _this.capsLock = (chr.toLowerCase() == chr && e.shiftKey) || (chr.toUpperCase() == chr && !e.shiftKey);
+              capsLock = (chr.toLowerCase() == chr && e.shiftKey) || (chr.toUpperCase() == chr && !e.shiftKey);
               return capsLock;
             })
         ).startWith(capsLock));
