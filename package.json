@@ -1,6 +1,6 @@
 {
   "name": "cycle-keyboard",
-  "version": "1.0.0-alpha.8",
+  "version": "1.0.0-rtm.1",
   "description": "A keyboard driver for cycle.js",
   "main": "./dist/index.js",
   "scripts": {
