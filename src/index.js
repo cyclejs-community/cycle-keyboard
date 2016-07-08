@@ -76,13 +76,13 @@ function makeKeyboardDriver() {
             .filter(e => e.displayKey == 'shift')
             .map(e => false)
         ).startWith(null));
-      this._capsLock = null;
+      var capsLock = null;
       const capsLockProducer = new KeyboardStatusProducer(
         xs.merge(
           _this.keyDown$
-            .filter(e => _this._capsLock != null && e.displayKey == 'caps lock')
+            .filter(e => capsLock != null && e.displayKey == 'caps lock')
             .map(e => {
-              _this._capsLock = !_this._capsLock;
+              capsLock = !capsLock;
               return capsLock;
             }),
           _this.keyPress$
@@ -94,9 +94,9 @@ function makeKeyboardDriver() {
             }).map(e => {
               var chr = getDisplayChar(e);
               _this.capsLock = (chr.toLowerCase() == chr && e.shiftKey) || (chr.toUpperCase() == chr && !e.shiftKey);
-              return _this._capsLock;
+              return capsLock;
             })
-        ).startWith(_this._capsLock));
+        ).startWith(capsLock));
       this.shift$ = xs.create(shiftProducer);;
       this.capsLock$ = xs.create(capsLockProducer);
     }
