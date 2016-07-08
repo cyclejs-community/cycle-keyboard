@@ -1,3 +1,5 @@
+import { StreamListener } from './listeners';
+
 class KeyboardEventProducer {
   constructor(type, mapper) {
     const _this = this;

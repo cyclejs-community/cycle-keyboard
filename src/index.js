@@ -1,6 +1,5 @@
 import xs from 'xstream';
 import { getDisplayKey, getDisplayChar } from './utils';
-import { StreamListener } from './listeners';
 import { KeyboardEventProducer, KeyboardStatusProducer } from './producers';
 
 function makeKeyboardDriver() {
