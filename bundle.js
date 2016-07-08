@@ -592,7 +592,7 @@ var HTMLSource = (function () {
 }());
 exports.HTMLSource = HTMLSource;
 
-},{"@cycle/xstream-adapter":20,"xstream":374}],5:[function(require,module,exports){
+},{"@cycle/xstream-adapter":20,"xstream":376}],5:[function(require,module,exports){
 "use strict";
 var xstream_adapter_1 = require('@cycle/xstream-adapter');
 var xstream_1 = require('xstream');
@@ -755,7 +755,7 @@ var MainDOMSource = (function () {
 }());
 exports.MainDOMSource = MainDOMSource;
 
-},{"./ElementFinder":2,"./EventDelegator":3,"./fromEvent":8,"./isolate":12,"./utils":19,"@cycle/xstream-adapter":20,"matches-selector":21,"xstream":374}],6:[function(require,module,exports){
+},{"./ElementFinder":2,"./EventDelegator":3,"./fromEvent":8,"./isolate":12,"./utils":19,"@cycle/xstream-adapter":20,"matches-selector":21,"xstream":376}],6:[function(require,module,exports){
 "use strict";
 var ScopeChecker = (function () {
     function ScopeChecker(scope, isolateModule) {
@@ -828,7 +828,7 @@ function fromEvent(element, eventName, useCapture) {
 }
 exports.fromEvent = fromEvent;
 
-},{"xstream":374}],9:[function(require,module,exports){
+},{"xstream":376}],9:[function(require,module,exports){
 "use strict";
 var hyperscript_1 = require('./hyperscript');
 function isValidString(param) {
@@ -1435,7 +1435,7 @@ function makeDOMDriver(container, options) {
 }
 exports.makeDOMDriver = makeDOMDriver;
 
-},{"./MainDOMSource":5,"./VNodeWrapper":7,"./isolateModule":13,"./modules":17,"./transposition":18,"./utils":19,"@cycle/xstream-adapter":20,"snabbdom":66,"xstream":374}],15:[function(require,module,exports){
+},{"./MainDOMSource":5,"./VNodeWrapper":7,"./isolateModule":13,"./modules":17,"./transposition":18,"./utils":19,"@cycle/xstream-adapter":20,"snabbdom":66,"xstream":376}],15:[function(require,module,exports){
 "use strict";
 var xstream_adapter_1 = require('@cycle/xstream-adapter');
 var transposition_1 = require('./transposition');
@@ -1516,7 +1516,7 @@ function mockDOMSource(streamAdapter, mockConfig) {
 }
 exports.mockDOMSource = mockDOMSource;
 
-},{"@cycle/xstream-adapter":20,"xstream":374}],17:[function(require,module,exports){
+},{"@cycle/xstream-adapter":20,"xstream":376}],17:[function(require,module,exports){
 "use strict";
 var ClassModule = require('snabbdom/modules/class');
 exports.ClassModule = ClassModule;
@@ -1581,7 +1581,7 @@ function makeTransposeVNode(runStreamAdapter) {
 }
 exports.makeTransposeVNode = makeTransposeVNode;
 
-},{"@cycle/xstream-adapter":20,"xstream":374}],19:[function(require,module,exports){
+},{"@cycle/xstream-adapter":20,"xstream":376}],19:[function(require,module,exports){
 "use strict";
 function isElement(obj) {
     return typeof HTMLElement === "object" ?
@@ -1663,7 +1663,7 @@ var XStreamAdapter = {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = XStreamAdapter;
 
-},{"xstream":374}],21:[function(require,module,exports){
+},{"xstream":376}],21:[function(require,module,exports){
 'use strict';
 
 var proto = Element.prototype;
@@ -5312,7 +5312,7 @@ exports.default = Cycle;
 
 },{}],71:[function(require,module,exports){
 arguments[4][20][0].apply(exports,arguments)
-},{"dup":20,"xstream":374}],72:[function(require,module,exports){
+},{"dup":20,"xstream":376}],72:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -12208,45 +12208,56 @@ var _xstream2 = _interopRequireDefault(_xstream);
 
 var _utils = require('./utils');
 
+var _producers = require('./producers');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 function makeKeyboardDriver() {
-  function keyboardDriver() {
-    var keyDown$ = _xstream2.default.create();
-    var keyUp$ = _xstream2.default.create();
-    var keyPress$ = _xstream2.default.create();
-    document.addEventListener('keydown', function (event) {
-      return keyDown$.shamefullySendNext(Object.assign(event, {
-        displayKey: (0, _utils.getDisplayKey)(event)
-      }));
+
+  var keyDownEventProducer = new _producers.KeyboardEventProducer('keydown', function (event) {
+    return Object.assign(event, {
+      displayKey: (0, _utils.getDisplayKey)(event)
     });
-    document.addEventListener('keyup', function (event) {
-      return keyUp$.shamefullySendNext(Object.assign(event, {
-        displayKey: (0, _utils.getDisplayKey)(event)
-      }));
+  });
+
+  var keyUpEventProducer = new _producers.KeyboardEventProducer('keyup', function (event) {
+    return Object.assign(event, {
+      displayKey: (0, _utils.getDisplayKey)(event)
     });
-    document.addEventListener('keypress', function (event) {
-      return keyPress$.shamefullySendNext(Object.assign(event, {
-        displayKey: (0, _utils.getDisplayKey)(event),
-        displayChar: (0, _utils.getDisplayChar)(event)
-      }));
+  });
+
+  var keyPressEventProducer = new _producers.KeyboardEventProducer('keypress', function (event) {
+    return Object.assign(event, {
+      displayKey: (0, _utils.getDisplayKey)(event),
+      displayChar: (0, _utils.getDisplayChar)(event)
     });
-    var shift$ = _xstream2.default.merge(keyDown$.filter(function (e) {
+  });
+
+  var KeyboardDriver = function KeyboardDriver() {
+    _classCallCheck(this, KeyboardDriver);
+
+    var _this = this;
+    this.keyDown$ = _xstream2.default.create(keyDownEventProducer);
+    this.keyUp$ = _xstream2.default.create(keyUpEventProducer);
+    this.keyPress$ = _xstream2.default.create(keyPressEventProducer);
+    var shiftProducer = new _producers.KeyboardStatusProducer(_xstream2.default.merge(_this.keyDown$.filter(function (e) {
       return e.displayKey == 'shift';
     }).map(function (e) {
       return true;
-    }), keyUp$.filter(function (e) {
+    }), _this.keyUp$.filter(function (e) {
       return e.displayKey == 'shift';
     }).map(function (e) {
       return false;
-    })).startWith(null);
+    })).startWith(null));
     var capsLock = null;
-    var capsLock$ = _xstream2.default.merge(keyDown$.filter(function (e) {
+    var capsLockProducer = new _producers.KeyboardStatusProducer(_xstream2.default.merge(_this.keyDown$.filter(function (e) {
       return capsLock != null && e.displayKey == 'caps lock';
     }).map(function (e) {
       capsLock = !capsLock;
       return capsLock;
-    }), keyPress$.filter(function (e) {
+    }), _this.keyPress$.filter(function (e) {
       var chr = (0, _utils.getDisplayChar)(e);
       if (!chr || chr.toLowerCase() == chr.toUpperCase()) return false;
       return true;
@@ -12254,21 +12265,19 @@ function makeKeyboardDriver() {
       var chr = (0, _utils.getDisplayChar)(e);
       capsLock = chr.toLowerCase() == chr && e.shiftKey || chr.toUpperCase() == chr && !e.shiftKey;
       return capsLock;
-    })).startWith(capsLock);
-    var sinks = {
-      keyDown$: keyDown$,
-      keyUp$: keyUp$,
-      keyPress$: keyPress$,
-      shift$: shift$,
-      capsLock$: capsLock$
-    };
-    return sinks;
+    })).startWith(capsLock));
+    this.shift$ = _xstream2.default.create(shiftProducer);;
+    this.capsLock$ = _xstream2.default.create(capsLockProducer);
+  };
+
+  function keyboardDriver() {
+    return new KeyboardDriver();
   }
   return keyboardDriver;
 }
 
 module.exports = { makeKeyboardDriver: makeKeyboardDriver };
-},{"./utils":372,"xstream":374}],371:[function(require,module,exports){
+},{"./producers":373,"./utils":374,"xstream":376}],371:[function(require,module,exports){
 "use strict";
 
 var keyCodes = {
@@ -12431,6 +12440,66 @@ var keyCodes = {
 
 module.exports = { keyCodes: keyCodes };
 },{}],372:[function(require,module,exports){
+"use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var StreamListener = function StreamListener(producer) {
+  _classCallCheck(this, StreamListener);
+
+  this.next = function (ev) {
+    return producer.stream.next(ev);
+  };
+  this.error = function (err) {
+    return console.error(err);
+  };
+  this.complete = function () {};
+};
+
+module.exports = { StreamListener: StreamListener };
+},{}],373:[function(require,module,exports){
+'use strict';
+
+var _listeners = require('./listeners');
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var KeyboardEventProducer = function KeyboardEventProducer(type, mapper) {
+  _classCallCheck(this, KeyboardEventProducer);
+
+  var _this = this;
+  this.start = function (listener) {
+    _this.stream = listener;
+    document.addEventListener(type, _this.handler);
+  };
+  this.stop = function () {
+    document.removeEventListener(type, _this.handler);
+    _this.stream = null;
+  };
+  this.stream = null;
+  this.handler = function (event) {
+    return _this.stream.next(mapper(event));
+  };
+};
+
+var KeyboardStatusProducer = function KeyboardStatusProducer(stream) {
+  _classCallCheck(this, KeyboardStatusProducer);
+
+  var _this = this;
+  this.stream = null;
+  this.source$ = stream;
+  this.streamListener = new _listeners.StreamListener(this);
+  this.start = function (listener) {
+    _this.stream = listener;
+    _this.source$.addListener(_this.streamListener);
+  };
+  this.stop = function () {
+    return _this.source$.removeListener(_this.streamListener);
+  };
+};
+
+module.exports = { KeyboardEventProducer: KeyboardEventProducer, KeyboardStatusProducer: KeyboardStatusProducer };
+},{"./listeners":372}],374:[function(require,module,exports){
 'use strict';
 
 var _keycodes = require('./keycodes');
@@ -12458,7 +12527,7 @@ function getDisplayChar(ev) {
 }
 
 module.exports = { getDisplayKey: getDisplayKey, getDisplayChar: getDisplayChar };
-},{"./keycodes":371}],373:[function(require,module,exports){
+},{"./keycodes":371}],375:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -14150,7 +14219,7 @@ exports.MemoryStream = MemoryStream;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Stream;
 
-},{}],374:[function(require,module,exports){
+},{}],376:[function(require,module,exports){
 "use strict";
 var core_1 = require('./core');
 exports.Stream = core_1.Stream;
@@ -14158,7 +14227,7 @@ exports.MemoryStream = core_1.MemoryStream;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = core_1.Stream;
 
-},{"./core":373}],375:[function(require,module,exports){
+},{"./core":375}],377:[function(require,module,exports){
 'use strict';
 
 require('babel-polyfill');
@@ -14241,4 +14310,4 @@ var drivers = {
 };
 (0, _xstreamRun.run)(main, drivers);
 
-},{"./keyboard":1,"@cycle/dom":11,"@cycle/xstream-run":69,"babel-polyfill":72,"cycle-keyboard":370,"xstream":374}]},{},[375]);
+},{"./keyboard":1,"@cycle/dom":11,"@cycle/xstream-run":69,"babel-polyfill":72,"cycle-keyboard":370,"xstream":376}]},{},[377]);

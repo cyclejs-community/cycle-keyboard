@@ -6,7 +6,7 @@
   "dependencies": {
     "@cycle/dom": "^10.0.5",
     "@cycle/xstream-run": "^3.0.3",
-    "cycle-keyboard": "^1.0.0-rc.1",
+    "cycle-keyboard": "^1.0.0-rtm.1",
     "xstream": "^5.1.0"
   },
   "devDependencies": {
