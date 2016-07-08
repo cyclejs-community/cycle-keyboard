@@ -6,7 +6,7 @@ A keyboard driver for cycle.js. [View Demo](https://artfuldev.github.io/cycle-ke
 ## Usage
 Install the package using node package manager
 ```
-$ npm install cycle-keyboard
+$ npm install cycle-keyboard@1.0.0-rc.1
 ```
 Import the driver in your cycle app
 ```
