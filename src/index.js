@@ -1,49 +1,9 @@
 import xs from 'xstream';
 import { getDisplayKey, getDisplayChar } from './utils';
-
+import { StreamListener } from './listeners';
+import { KeyboardEventProducer, KeyboardStatusProducer } from './producers';
 
 function makeKeyboardDriver() {
-
-  class KeyboardEventProducer {
-    constructor(type, mapper) {
-      
-      // hold onto this reference
-      const _this = this;
-
-      this.start = function (listener) {
-        _this.stream = listener;
-        document.addEventListener(type, _this.handler);
-      };
-      this.stop = function () {
-        document.removeEventListener(type, _this.handler);
-        _this.stream = null;
-      };
-      this.stream = null;
-      this.handler = event => _this.stream.next(mapper(event));
-    }
-  }
-
-  class StreamListener {
-    constructor(producer) {
-      this.next = ev => producer.stream.next(ev),
-      this.error = err => console.error(err),
-      this.complete = () => { }
-    }
-  }
-
-  class KeyboardStatusProducer {
-    constructor(stream) {
-      const _this = this;
-      this.stream = null;
-      this.source$ = stream;
-      this.streamListener = new StreamListener(this);
-      this.start = function (listener) {
-        _this.stream = listener;
-        _this.source$.addListener(_this.streamListener);
-      };
-      this.stop = () => _this.source$.removeListener(_this.streamListener);
-    }
-  }
 
   const keyDownEventProducer = new KeyboardEventProducer('keydown',
     event => Object.assign(event, {
@@ -62,6 +22,7 @@ function makeKeyboardDriver() {
     }));
 
   class KeyboardDriver {
+    
     constructor() {
       const _this = this;
       this.keyDown$ = xs.create(keyDownEventProducer);
