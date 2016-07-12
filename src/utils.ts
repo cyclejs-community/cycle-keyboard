@@ -1,6 +1,6 @@
 import { keyCodes } from './keycodes';
 
-function getDisplayKey(ev) {
+export function getDisplayKey(ev) {
   var key = '';
   if (ev.ctrlKey)
     key += 'ctrl';
@@ -19,7 +19,7 @@ function getDisplayKey(ev) {
   return key;
 }
 
-function getDisplayChar(ev) {
+export function getDisplayChar(ev) {
   if (event.which == null) {
     return String.fromCharCode(event.keyCode); // IE
   } else if (event.which != 0 && event.charCode != 0) {
@@ -28,5 +28,3 @@ function getDisplayChar(ev) {
     return null; // special key
   }
 }
-
-module.exports = { getDisplayKey, getDisplayChar };

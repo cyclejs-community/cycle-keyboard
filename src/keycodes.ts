@@ -1,4 +1,4 @@
-const keyCodes = {
+export const keyCodes = {
   3: "break",
   8: "backspace / delete",
   9: "tab",
@@ -155,5 +155,3 @@ const keyCodes = {
   234: "XF86Back",
   255: "toggle touchpad"
 };
-
-module.exports = { keyCodes };

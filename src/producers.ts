@@ -1,6 +1,15 @@
 import { StreamListener } from './listeners';
+import { Stream, Producer, Listener } from 'xstream';
 
-class KeyboardEventProducer {
+export interface IKeyboardDriverProducer<T> {
+  stream: Listener<T>
+}
+
+export class KeyboardEventProducer implements Producer<KeyboardEvent>, IKeyboardDriverProducer<KeyboardEvent> {
+  start: (listener: Listener<KeyboardEvent>) => void;
+  stop: () => void;
+  stream: Listener<KeyboardEvent>;
+  handler: (ev: KeyboardEvent) => void;
   constructor(type, mapper) {
     const _this = this;
     this.start = function (listener) {
@@ -16,7 +25,9 @@ class KeyboardEventProducer {
   }
 }
 
-class KeyboardStatusProducer {
+export class KeyboardStatusProducer implements Producer<boolean>, IKeyboardDriverProducer<boolean> {
+  start: (listener: Listener<KeyboardEvent>) => void;
+  stop: () => void;
   constructor(stream) {
     const _this = this;
     this.stream = null;
@@ -29,5 +40,3 @@ class KeyboardStatusProducer {
     this.stop = () => _this.source$.removeListener(_this.streamListener);
   }
 }
-
-module.exports = { KeyboardEventProducer, KeyboardStatusProducer };
