@@ -1,16 +1,17 @@
 import { StreamListener } from './listeners';
 import { Stream, Producer, Listener } from 'xstream';
+import { IExtendedKeyboardEvent } from './utils';
 
 export interface IKeyboardDriverProducer<T> {
   stream: Listener<T>
 }
 
-export class KeyboardEventProducer implements Producer<KeyboardEvent>, IKeyboardDriverProducer<KeyboardEvent> {
-  start: (listener: Listener<KeyboardEvent>) => void;
+export class KeyboardEventProducer implements Producer<IExtendedKeyboardEvent>, IKeyboardDriverProducer<IExtendedKeyboardEvent> {
+  start: (listener: Listener<IExtendedKeyboardEvent>) => void;
   stop: () => void;
-  stream: Listener<KeyboardEvent>;
-  handler: (ev: KeyboardEvent) => void;
-  constructor(type, mapper) {
+  stream: Listener<IExtendedKeyboardEvent>;
+  handler: (ev: IExtendedKeyboardEvent) => void;
+  constructor(type: string, mapper: (ev: KeyboardEvent) => IExtendedKeyboardEvent) {
     const _this = this;
     this.start = function (listener) {
       _this.stream = listener;
@@ -26,14 +27,17 @@ export class KeyboardEventProducer implements Producer<KeyboardEvent>, IKeyboard
 }
 
 export class KeyboardStatusProducer implements Producer<boolean>, IKeyboardDriverProducer<boolean> {
-  start: (listener: Listener<KeyboardEvent>) => void;
+  start: (listener: Listener<boolean>) => void;
   stop: () => void;
-  constructor(stream) {
+  stream: Listener<boolean>;
+  source$: Stream<boolean>;
+  streamListener: Listener<boolean>;
+  constructor(stream: Stream<boolean>) {
     const _this = this;
     this.stream = null;
     this.source$ = stream;
-    this.streamListener = new StreamListener(this);
-    this.start = function (listener) {
+    this.streamListener = new StreamListener(_this);
+    this.start = function (listener: Listener<boolean>) {
       _this.stream = listener;
       _this.source$.addListener(_this.streamListener);
     };

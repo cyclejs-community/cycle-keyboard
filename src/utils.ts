@@ -1,6 +1,6 @@
 import { keyCodes } from './keycodes';
 
-export function getDisplayKey(ev) {
+export function getDisplayKey(ev: KeyboardEvent) {
   var key = '';
   if (ev.ctrlKey)
     key += 'ctrl';
@@ -19,12 +19,17 @@ export function getDisplayKey(ev) {
   return key;
 }
 
-export function getDisplayChar(ev) {
-  if (event.which == null) {
-    return String.fromCharCode(event.keyCode); // IE
-  } else if (event.which != 0 && event.charCode != 0) {
-    return String.fromCharCode(event.which);   // the rest
+export function getDisplayChar(ev: KeyboardEvent) {
+  if (ev.which == null) {
+    return String.fromCharCode(ev.keyCode); // IE
+  } else if (ev.which != 0 && ev.charCode != 0) {
+    return String.fromCharCode(ev.which);   // the rest
   } else {
     return null; // special key
   }
+}
+
+export interface IExtendedKeyboardEvent extends KeyboardEvent {
+  displayKey: string;
+  displayChar: string;
 }

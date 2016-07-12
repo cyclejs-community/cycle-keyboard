@@ -38,3 +38,7 @@ jspm_packages
 
 # Distributions
 dist
+
+# TS generated files
+src/*.d.ts
+src/*.js

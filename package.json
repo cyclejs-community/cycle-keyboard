@@ -1,11 +1,11 @@
 {
   "name": "cycle-keyboard",
-  "version": "1.0.0-rtm.1",
+  "version": "1.0.0-rtm.2",
   "description": "A keyboard driver for cycle.js",
-  "main": "./dist/index.js",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "scripts": {
-    "build": "babel src --presets babel-preset-es2015 --out-dir dist",
-    "prepublish": "npm run build"
+    "build": "tsc"
   },
   "repository": {
     "type": "git",

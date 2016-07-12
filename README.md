@@ -1,12 +1,12 @@
 # cycle-keyboard
 A keyboard driver for cycle.js. [View Demo](https://artfuldev.github.io/cycle-keyboard)
 
-[![npm version](https://img.shields.io/badge/npm-v1.0.0--rtm.1-orange.svg)](https://img.shields.io/badge/npm-v1.0.0--rtm.1-orange.svg)[![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://img.shields.io/badge/license-MIT-blue.svg)
+[![npm version](https://img.shields.io/badge/npm-v1.0.0--rtm.2-orange.svg)](https://img.shields.io/badge/npm-v1.0.0--rtm.2-orange.svg)[![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://img.shields.io/badge/license-MIT-blue.svg)
 
 ## Usage
 Install the package using node package manager
 ```
-$ npm install cycle-keyboard@1.0.0-rtm.1
+$ npm install cycle-keyboard@1.0.0-rtm.2
 ```
 Import the driver in your cycle app
 ```
