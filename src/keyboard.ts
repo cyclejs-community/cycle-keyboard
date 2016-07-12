@@ -1,6 +1,6 @@
 import { div, span } from '@cycle/dom';
 
-const keys = [
+export const keys = [
   {
     name: 'esc',
     code: 27
@@ -485,7 +485,7 @@ const keys = [
   }
 ];
 
-function drawKey(key, state) {
+export function drawKey(key, state) {
   var classNames = '';
   if (state.shift)
     classNames += '.shifted';
@@ -514,7 +514,7 @@ function drawKey(key, state) {
   ]);
 }
 
-const allowedKeyCodes = [
+export const allowedKeyCodes = [
   // 0-9
   48,
   49,
@@ -597,5 +597,3 @@ const allowedKeyCodes = [
   192,
   223,
 ];
-
-module.exports = { keys, drawKey, allowedKeyCodes };
