@@ -6,7 +6,7 @@
   "dependencies": {
     "@cycle/dom": "^10.0.5",
     "@cycle/xstream-run": "^3.0.3",
-    "cycle-keyboard": "^1.0.0-rc.1",
+    "cycle-keyboard": "^1.0.0-rtm.2",
     "xstream": "^5.1.0"
   },
   "devDependencies": {
@@ -18,7 +18,7 @@
     "webpack": "^1.13.1"
   },
   "scripts": {
-    "dev": "concurrently \"lite-server\" \"watchify index.js -o bundle.js -t [ babelify — presets [ es2015 stage-0] ]\" ",
+    "dev": "concurrently \"webpack --watch\" \"lite-server\"",
     "start": "npm run dev"
   },
   "repository": {

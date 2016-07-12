@@ -1,11 +1,18 @@
-import "babel-polyfill";
-import xs from 'xstream';
+import { Stream } from 'xstream';
 import { run } from '@cycle/xstream-run';
 import { div, ul, li, span, makeDOMDriver } from '@cycle/dom';
-import { makeKeyboardDriver } from 'cycle-keyboard';
+import { DOMSource } from '@cycle/dom/xstream-typings';
+import { makeKeyboardDriver, KeyboardDriver } from 'cycle-keyboard';
 import { keys, drawKey, allowedKeyCodes } from './keyboard';
 
-function main({ dom, keyboard }) {
+interface ISources {
+  dom: DOMSource,
+  keyboard: KeyboardDriver 
+}
+
+function main(sources: ISources) {
+  const xs = Stream;
+  const keyboard = sources.keyboard;
   const keyDownId$ = keyboard.keyDown$.map(e => e.keyCode);
   const keyUpId$ = keyboard.keyUp$.map(e => -e.keyCode).startWith(0);
   const keysDown$ = xs.merge(keyDownId$, keyUpId$).fold((keys, id) => {
@@ -70,8 +77,8 @@ function main({ dom, keyboard }) {
   };
   return sinks;
 }
-const drivers = {
+
+run(main, {
   dom: makeDOMDriver('#app'),
   keyboard: makeKeyboardDriver()
-}
-run(main, drivers);
+});
