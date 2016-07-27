@@ -27,6 +27,7 @@
   },
   "homepage": "https://github.com/artfuldev/cycle-keyboard",
   "dependencies": {
+    "keycode": "^2.1.2",
     "xstream": "^5.1.0"
   },
   "devDependencies": {
