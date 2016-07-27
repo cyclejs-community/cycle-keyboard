@@ -1,34 +1,34 @@
 import { Stream } from 'xstream';
-import { getDisplayKey, getDisplayChar, IExtendedKeyboardEvent } from './utils';
+import { getDisplayKey, getDisplayChar, ExtendedKeyboardEvent } from './utils';
 import { KeyboardEventProducer, KeyboardStatusProducer } from './producers';
 
 
 const keyDownEventProducer = new KeyboardEventProducer('keydown',
   (event: KeyboardEvent) => {
-    var extendedEvent: IExtendedKeyboardEvent = event as IExtendedKeyboardEvent;
+    var extendedEvent: ExtendedKeyboardEvent = event as ExtendedKeyboardEvent;
     extendedEvent.displayKey = getDisplayKey(extendedEvent);
     return extendedEvent;
   });
 
 const keyUpEventProducer = new KeyboardEventProducer('keyup',
   (event: KeyboardEvent) => {
-    var extendedEvent: IExtendedKeyboardEvent = event as IExtendedKeyboardEvent;
+    var extendedEvent: ExtendedKeyboardEvent = event as ExtendedKeyboardEvent;
     extendedEvent.displayKey = getDisplayKey(extendedEvent);
     return extendedEvent;
   });
 
 const keyPressEventProducer = new KeyboardEventProducer('keypress',
   (event: KeyboardEvent) => {
-    var extendedEvent: IExtendedKeyboardEvent = event as IExtendedKeyboardEvent;
+    var extendedEvent: ExtendedKeyboardEvent = event as ExtendedKeyboardEvent;
     extendedEvent.displayKey = getDisplayKey(extendedEvent);
     extendedEvent.displayChar = getDisplayChar(extendedEvent);
     return extendedEvent;
   });
 
 export class KeyboardDriver {
-  keyDown$: Stream<IExtendedKeyboardEvent>;
-  keyUp$: Stream<IExtendedKeyboardEvent>;
-  keyPress$: Stream<IExtendedKeyboardEvent>;
+  keyDown$: Stream<ExtendedKeyboardEvent>;
+  keyUp$: Stream<ExtendedKeyboardEvent>;
+  keyPress$: Stream<ExtendedKeyboardEvent>;
   shift$: Stream<boolean>;
   capsLock$: Stream<boolean>;
   constructor() {
@@ -40,17 +40,17 @@ export class KeyboardDriver {
     const shiftProducer = new KeyboardStatusProducer(
       xs.merge(
         _this.keyDown$
-          .filter(e => e.displayKey == 'shift')
+          .filter(e => e.keyCode === 16)
           .map(e => true),
         _this.keyUp$
-          .filter(e => e.displayKey == 'shift')
+          .filter(e => e.keyCode === 16)
           .map(e => false)
       ).startWith(null));
     var capsLock: boolean = null;
     const capsLockProducer = new KeyboardStatusProducer(
       xs.merge(
         _this.keyDown$
-          .filter(e => capsLock != null && e.displayKey == 'caps lock')
+          .filter(e => capsLock != null && e.keyCode === 20)
           .map(e => {
             capsLock = !capsLock;
             return capsLock;

@@ -1,4 +1,6 @@
-import { keyCodes } from './keycodes';
+import { names } from 'keycode';
+
+const localNames: string[] = names;
 
 export function getDisplayKey(ev: KeyboardEvent) {
   var key = '';
@@ -10,7 +12,7 @@ export function getDisplayKey(ev: KeyboardEvent) {
     key += key ? '+alt' : 'alt';
   var keyChar = ev.type == 'keypress'
     ? getDisplayChar(ev)
-    : keyCodes[ev.keyCode];
+    : localNames[ev.keyCode];
   if (ev.type == 'keydown'
     && (keyChar == 'ctrl' || keyChar == 'alt' || keyChar == 'shift'))
     return key;
@@ -29,7 +31,7 @@ export function getDisplayChar(ev: KeyboardEvent) {
   }
 }
 
-export interface IExtendedKeyboardEvent extends KeyboardEvent {
+export interface ExtendedKeyboardEvent extends KeyboardEvent {
   displayKey: string;
   displayChar: string;
 }
