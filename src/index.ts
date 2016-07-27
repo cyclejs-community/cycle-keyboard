@@ -1,34 +1,34 @@
 import { Stream } from 'xstream';
-import { getDisplayKey, getDisplayChar, IExtendedKeyboardEvent } from './utils';
+import { getDisplayKey, getDisplayChar, ExtendedKeyboardEvent } from './utils';
 import { KeyboardEventProducer, KeyboardStatusProducer } from './producers';
 
 
 const keyDownEventProducer = new KeyboardEventProducer('keydown',
   (event: KeyboardEvent) => {
-    var extendedEvent: IExtendedKeyboardEvent = event as IExtendedKeyboardEvent;
+    var extendedEvent: ExtendedKeyboardEvent = event as ExtendedKeyboardEvent;
     extendedEvent.displayKey = getDisplayKey(extendedEvent);
     return extendedEvent;
   });
 
 const keyUpEventProducer = new KeyboardEventProducer('keyup',
   (event: KeyboardEvent) => {
-    var extendedEvent: IExtendedKeyboardEvent = event as IExtendedKeyboardEvent;
+    var extendedEvent: ExtendedKeyboardEvent = event as ExtendedKeyboardEvent;
     extendedEvent.displayKey = getDisplayKey(extendedEvent);
     return extendedEvent;
   });
 
 const keyPressEventProducer = new KeyboardEventProducer('keypress',
   (event: KeyboardEvent) => {
-    var extendedEvent: IExtendedKeyboardEvent = event as IExtendedKeyboardEvent;
+    var extendedEvent: ExtendedKeyboardEvent = event as ExtendedKeyboardEvent;
     extendedEvent.displayKey = getDisplayKey(extendedEvent);
     extendedEvent.displayChar = getDisplayChar(extendedEvent);
     return extendedEvent;
   });
 
 export class KeyboardDriver {
-  keyDown$: Stream<IExtendedKeyboardEvent>;
-  keyUp$: Stream<IExtendedKeyboardEvent>;
-  keyPress$: Stream<IExtendedKeyboardEvent>;
+  keyDown$: Stream<ExtendedKeyboardEvent>;
+  keyUp$: Stream<ExtendedKeyboardEvent>;
+  keyPress$: Stream<ExtendedKeyboardEvent>;
   shift$: Stream<boolean>;
   capsLock$: Stream<boolean>;
   constructor() {

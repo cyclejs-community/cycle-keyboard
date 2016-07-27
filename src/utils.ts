@@ -29,7 +29,7 @@ export function getDisplayChar(ev: KeyboardEvent) {
   }
 }
 
-export interface IExtendedKeyboardEvent extends KeyboardEvent {
+export interface ExtendedKeyboardEvent extends KeyboardEvent {
   displayKey: string;
   displayChar: string;
 }
