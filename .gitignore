@@ -42,6 +42,7 @@ dist
 # TS generated files
 src/*.d.ts
 src/*.js
-cycle-keyboard-1.0.0-rtm.3.tgz
-.vscode/.browse.VC.db-wal
-*.db
+
+# Unnecessary files
+*.tgz
+.vscode/.browse.*
