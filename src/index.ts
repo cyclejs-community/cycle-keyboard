@@ -25,37 +25,59 @@ const keyPressEventProducer = new KeyboardEventProducer('keypress',
     return extendedEvent;
   });
 
-export class KeyboardDriver {
-  keyDown$: Stream<ExtendedKeyboardEvent>;
-  keyUp$: Stream<ExtendedKeyboardEvent>;
-  keyPress$: Stream<ExtendedKeyboardEvent>;
+export class KeyboardSource {
+  downs: (key?: number|string) => Stream<ExtendedKeyboardEvent>;
+  ups: (key?: number|string) => Stream<ExtendedKeyboardEvent>;
+  presses: (key?: number|string) => Stream<ExtendedKeyboardEvent>;
   shift$: Stream<boolean>;
   capsLock$: Stream<boolean>;
   constructor() {
     const _this = this;
     const xs = Stream;
-    this.keyDown$ = xs.create(keyDownEventProducer);
-    this.keyUp$ = xs.create(keyUpEventProducer);
-    this.keyPress$ = xs.create(keyPressEventProducer);
+    const keyDown$ = xs.create(keyDownEventProducer);
+    this.downs = function(key?: number|string) {
+        if(key === undefined)
+            return keyDown$;
+        if (typeof key === 'number')
+            return keyDown$.filter(ev => ev.keyCode === key);
+        if(typeof key === 'string')
+            return keyDown$.filter(ev => ev.displayKey === key);
+    };
+    const keyUp$ = xs.create(keyUpEventProducer);
+    this.ups = function(key?: number|string) {
+        if(key === undefined)
+            return keyUp$;
+        if (typeof key === 'number')
+            return keyUp$.filter(ev => ev.keyCode === key);
+        if(typeof key === 'string')
+            return keyUp$.filter(ev => ev.displayKey === key);
+    };
+    const keyPress$ = xs.create(keyPressEventProducer);
+    this.presses = function(key?: number|string) {
+        if(key === undefined)
+            return keyPress$;
+        if (typeof key === 'number')
+            return keyPress$.filter(ev => ev.keyCode === key);
+        if(typeof key === 'string')
+            return keyPress$.filter(ev => ev.displayChar === key);
+    };
     const shiftProducer = new KeyboardStatusProducer(
       xs.merge(
-        _this.keyDown$
-          .filter(e => e.keyCode === 16)
+        _this.downs(16)
           .map(e => true),
-        _this.keyUp$
-          .filter(e => e.keyCode === 16)
+        _this.ups(16)
           .map(e => false)
       ).startWith(null));
     var capsLock: boolean = null;
     const capsLockProducer = new KeyboardStatusProducer(
       xs.merge(
-        _this.keyDown$
-          .filter(e => capsLock != null && e.keyCode === 20)
+        _this.downs(20)
+          .filter(() => capsLock != null)
           .map(e => {
             capsLock = !capsLock;
             return capsLock;
           }),
-        _this.keyPress$
+        _this.presses()
           .filter(e => {
             var chr = getDisplayChar(e);
             if (!chr || chr.toLowerCase() == chr.toUpperCase())
@@ -67,15 +89,16 @@ export class KeyboardDriver {
             return capsLock;
           })
       ).startWith(capsLock));
-    this.shift$ = xs.create(shiftProducer);;
+    this.shift$ = xs.create(shiftProducer);
     this.capsLock$ = xs.create(capsLockProducer);
   }
 }
 
 export function makeKeyboardDriver() {
-
   function keyboardDriver() {
-    return new KeyboardDriver();
+    return new KeyboardSource();
   }
   return keyboardDriver;
 }
+
+export default makeKeyboardDriver;
