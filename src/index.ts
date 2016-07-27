@@ -26,7 +26,7 @@ const keyPressEventProducer = new KeyboardEventProducer('keypress',
   });
 
 export class KeyboardSource {
-  keyDown$: Stream<ExtendedKeyboardEvent>;
+  downs: (key?: number|string) => Stream<ExtendedKeyboardEvent>;
   ups: (key?: number|string) => Stream<ExtendedKeyboardEvent>;
   keyPress$: Stream<ExtendedKeyboardEvent>;
   shift$: Stream<boolean>;
@@ -34,7 +34,15 @@ export class KeyboardSource {
   constructor() {
     const _this = this;
     const xs = Stream;
-    this.keyDown$ = xs.create(keyDownEventProducer);
+    const keyDown$ = xs.create(keyDownEventProducer);
+    this.downs = function(key?: number|string) {
+        if(key === undefined)
+            return keyDown$;
+        if (typeof key === 'number')
+            return keyDown$.filter(ev => ev.keyCode === key);
+        if(typeof key === 'string')
+            return keyDown$.filter(ev => ev.displayKey === key);
+    };
     const keyUp$ = xs.create(keyUpEventProducer);
     this.ups = function(key?: number|string) {
         if(key === undefined)
@@ -47,8 +55,7 @@ export class KeyboardSource {
     this.keyPress$ = xs.create(keyPressEventProducer);
     const shiftProducer = new KeyboardStatusProducer(
       xs.merge(
-        _this.keyDown$
-          .filter(e => e.keyCode === 16)
+        _this.downs(16)
           .map(e => true),
         _this.ups(16)
           .map(e => false)
@@ -56,8 +63,8 @@ export class KeyboardSource {
     var capsLock: boolean = null;
     const capsLockProducer = new KeyboardStatusProducer(
       xs.merge(
-        _this.keyDown$
-          .filter(e => capsLock != null && e.keyCode === 20)
+        _this.downs(20)
+          .filter(() => capsLock != null)
           .map(e => {
             capsLock = !capsLock;
             return capsLock;
