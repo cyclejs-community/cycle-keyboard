@@ -40,17 +40,17 @@ export class KeyboardDriver {
     const shiftProducer = new KeyboardStatusProducer(
       xs.merge(
         _this.keyDown$
-          .filter(e => e.displayKey == 'shift')
+          .filter(e => e.keyCode === 16)
           .map(e => true),
         _this.keyUp$
-          .filter(e => e.displayKey == 'shift')
+          .filter(e => e.keyCode === 16)
           .map(e => false)
       ).startWith(null));
     var capsLock: boolean = null;
     const capsLockProducer = new KeyboardStatusProducer(
       xs.merge(
         _this.keyDown$
-          .filter(e => capsLock != null && e.displayKey == 'caps lock')
+          .filter(e => capsLock != null && e.keyCode === 20)
           .map(e => {
             capsLock = !capsLock;
             return capsLock;
