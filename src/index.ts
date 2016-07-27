@@ -28,7 +28,7 @@ const keyPressEventProducer = new KeyboardEventProducer('keypress',
 export class KeyboardSource {
   downs: (key?: number|string) => Stream<ExtendedKeyboardEvent>;
   ups: (key?: number|string) => Stream<ExtendedKeyboardEvent>;
-  keyPress$: Stream<ExtendedKeyboardEvent>;
+  presses: (key?: number|string) => Stream<ExtendedKeyboardEvent>;
   shift$: Stream<boolean>;
   capsLock$: Stream<boolean>;
   constructor() {
@@ -52,7 +52,15 @@ export class KeyboardSource {
         if(typeof key === 'string')
             return keyUp$.filter(ev => ev.displayKey === key);
     };
-    this.keyPress$ = xs.create(keyPressEventProducer);
+    const keyPress$ = xs.create(keyPressEventProducer);
+    this.presses = function(key?: number|string) {
+        if(key === undefined)
+            return keyPress$;
+        if (typeof key === 'number')
+            return keyPress$.filter(ev => ev.keyCode === key);
+        if(typeof key === 'string')
+            return keyPress$.filter(ev => ev.displayChar === key);
+    };
     const shiftProducer = new KeyboardStatusProducer(
       xs.merge(
         _this.downs(16)
@@ -69,7 +77,7 @@ export class KeyboardSource {
             capsLock = !capsLock;
             return capsLock;
           }),
-        _this.keyPress$
+        _this.presses()
           .filter(e => {
             var chr = getDisplayChar(e);
             if (!chr || chr.toLowerCase() == chr.toUpperCase())
