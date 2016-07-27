@@ -25,9 +25,9 @@ const keyPressEventProducer = new KeyboardEventProducer('keypress',
     return extendedEvent;
   });
 
-export class KeyboardDriver {
+export class KeyboardSource {
   keyDown$: Stream<ExtendedKeyboardEvent>;
-  keyUp$: Stream<ExtendedKeyboardEvent>;
+  ups: (key?: number|string) => Stream<ExtendedKeyboardEvent>;
   keyPress$: Stream<ExtendedKeyboardEvent>;
   shift$: Stream<boolean>;
   capsLock$: Stream<boolean>;
@@ -35,15 +35,22 @@ export class KeyboardDriver {
     const _this = this;
     const xs = Stream;
     this.keyDown$ = xs.create(keyDownEventProducer);
-    this.keyUp$ = xs.create(keyUpEventProducer);
+    const keyUp$ = xs.create(keyUpEventProducer);
+    this.ups = function(key?: number|string) {
+        if(key === undefined)
+            return keyUp$;
+        if (typeof key === 'number')
+            return keyUp$.filter(ev => ev.keyCode === key);
+        if(typeof key === 'string')
+            return keyUp$.filter(ev => ev.displayKey === key);
+    };
     this.keyPress$ = xs.create(keyPressEventProducer);
     const shiftProducer = new KeyboardStatusProducer(
       xs.merge(
         _this.keyDown$
           .filter(e => e.keyCode === 16)
           .map(e => true),
-        _this.keyUp$
-          .filter(e => e.keyCode === 16)
+        _this.ups(16)
           .map(e => false)
       ).startWith(null));
     var capsLock: boolean = null;
@@ -67,15 +74,16 @@ export class KeyboardDriver {
             return capsLock;
           })
       ).startWith(capsLock));
-    this.shift$ = xs.create(shiftProducer);;
+    this.shift$ = xs.create(shiftProducer);
     this.capsLock$ = xs.create(capsLockProducer);
   }
 }
 
 export function makeKeyboardDriver() {
-
   function keyboardDriver() {
-    return new KeyboardDriver();
+    return new KeyboardSource();
   }
   return keyboardDriver;
 }
+
+export default makeKeyboardDriver;
