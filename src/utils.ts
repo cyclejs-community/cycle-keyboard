@@ -1,6 +1,6 @@
 import { names } from 'keycode';
 
-const localNames: string[] = names;
+const localNames = names;
 
 export function getDisplayKey(ev: KeyboardEvent) {
   var key = '';

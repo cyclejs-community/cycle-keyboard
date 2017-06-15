@@ -1,6 +1,7 @@
 import { Stream } from 'xstream';
 import { getDisplayKey, getDisplayChar, ExtendedKeyboardEvent } from './utils';
 import { KeyboardEventProducer, KeyboardStatusProducer } from './producers';
+import { adapt } from '@cycle/run/lib/adapt';
 
 
 const keyDownEventProducer = new KeyboardEventProducer('keydown',
@@ -37,29 +38,29 @@ export class KeyboardSource {
     const keyDown$ = xs.create(keyDownEventProducer);
     this.downs = function(key?: number|string) {
         if(key === undefined)
-            return keyDown$;
+            return adapt(keyDown$);
         if (typeof key === 'number')
-            return keyDown$.filter(ev => ev.keyCode === key);
+            return adapt(keyDown$.filter(ev => ev.keyCode === key));
         if(typeof key === 'string')
-            return keyDown$.filter(ev => ev.displayKey === key);
+            return adapt(keyDown$.filter(ev => ev.displayKey === key));
     };
     const keyUp$ = xs.create(keyUpEventProducer);
     this.ups = function(key?: number|string) {
         if(key === undefined)
-            return keyUp$;
+            return adapt(keyUp$);
         if (typeof key === 'number')
-            return keyUp$.filter(ev => ev.keyCode === key);
+            return adapt(keyUp$.filter(ev => ev.keyCode === key));
         if(typeof key === 'string')
-            return keyUp$.filter(ev => ev.displayKey === key);
+            return adapt(keyUp$.filter(ev => ev.displayKey === key));
     };
     const keyPress$ = xs.create(keyPressEventProducer);
     this.presses = function(key?: number|string) {
         if(key === undefined)
-            return keyPress$;
+            return adapt(keyPress$);
         if (typeof key === 'number')
-            return keyPress$.filter(ev => ev.keyCode === key);
+            return adapt(keyPress$.filter(ev => ev.keyCode === key));
         if(typeof key === 'string')
-            return keyPress$.filter(ev => ev.displayChar === key);
+            return adapt(keyPress$.filter(ev => ev.displayChar === key));
     };
     const shiftProducer = new KeyboardStatusProducer(
       xs.merge(
@@ -89,8 +90,8 @@ export class KeyboardSource {
             return capsLock;
           })
       ).startWith(capsLock));
-    this.shift$ = xs.create(shiftProducer);
-    this.capsLock$ = xs.create(capsLockProducer);
+    this.shift$ = adapt(xs.create(shiftProducer));
+    this.capsLock$ = adapt(xs.create(capsLockProducer));
   }
 }
 
