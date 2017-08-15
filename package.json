@@ -3,7 +3,6 @@
   "version": "1.0.0-rtm.4",
   "description": "A keyboard driver for cycle.js",
   "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
   "scripts": {
     "build": "tsc"
   },
@@ -34,9 +33,6 @@
     "xstream": "*"
   },
   "devDependencies": {
-    "@cycle/run": "3.1.0",
-    "typescript": "^2.3.4",
-    "typings": "^2.1.1",
-    "xstream": "^10.8.0"
+    "typescript": "^2.4.2"
   }
 }
